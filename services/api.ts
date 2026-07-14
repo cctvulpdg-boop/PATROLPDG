@@ -69,6 +69,11 @@ export const api = {
         throw new Error("Server mengembalikan format HTML. Pastikan skrip sudah di-deploy sebagai 'Anyone'.");
       }
 
+      // Jika response adalah Method GET OK (belum di-deploy fitur backup di GAS)
+      if (text.trim() === "Method GET OK" || !text.trim().startsWith("[")) {
+        return { error: "Fitur file backup belum ditambahkan/aktif di Google Apps Script Anda. Silakan hubungi Administrator untuk memperbarui Apps Script." };
+      }
+
       let data;
       try {
         data = JSON.parse(text);

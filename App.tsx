@@ -291,6 +291,32 @@ const App: React.FC = () => {
           const updatedMaster = { ...data.masterData };
           Object.keys(updatedMaster).forEach(k => { 
             if (!updatedMaster[k].keypoints) updatedMaster[k].keypoints = {}; 
+            
+            // Deduplicate petugas
+            if (Array.isArray(updatedMaster[k].petugas)) {
+              updatedMaster[k].petugas = Array.from(new Set(updatedMaster[k].petugas.map((p: string) => p?.trim()))).filter(Boolean);
+            } else {
+              updatedMaster[k].petugas = [];
+            }
+
+            // Deduplicate penyulang
+            if (Array.isArray(updatedMaster[k].penyulang)) {
+              updatedMaster[k].penyulang = Array.from(new Set(updatedMaster[k].penyulang.map((p: string) => p?.trim()))).filter(Boolean);
+            } else {
+              updatedMaster[k].penyulang = [];
+            }
+
+            // Deduplicate keypoints per penyulang
+            if (updatedMaster[k].keypoints) {
+              Object.keys(updatedMaster[k].keypoints).forEach(kpKey => {
+                if (Array.isArray(updatedMaster[k].keypoints[kpKey])) {
+                  updatedMaster[k].keypoints[kpKey] = Array.from(new Set(updatedMaster[k].keypoints[kpKey].map((p: string) => p?.trim()))).filter(Boolean);
+                } else {
+                  updatedMaster[k].keypoints[kpKey] = [];
+                }
+              });
+            }
+
             // Sanitize name to prevent key collisions if API data contains duplicate values
             updatedMaster[k].name = k as any;
           });

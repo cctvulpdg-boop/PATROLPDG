@@ -151,7 +151,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
             <tbody className="divide-y divide-slate-50">
               {statsPerPenyulang.length > 0 ? (
                 statsPerPenyulang.map((item, index) => (
-                  <tr key={`${item.ulp}-${item.name}`} className="hover:bg-slate-50/50 transition-colors">
+                  <tr key={`${item.ulp}-${item.name}-${index}`} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-8 py-5">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
                         index === 0 ? 'bg-amber-100 text-amber-700' : 

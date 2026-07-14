@@ -284,8 +284,8 @@ export const AdminRekap: React.FC<AdminRekapProps> = ({ reports, masterData }) =
             </thead>
             <tbody className="divide-y divide-slate-100">
               {rekapData.length > 0 ? (
-                rekapData.map((item) => (
-                  <tr key={`${item.ulp}-${item.nama}`} className={`hover:bg-slate-50 transition-colors ${item.no <= 6 && item.total > 0 ? 'bg-yellow-50/30' : ''}`}>
+                rekapData.map((item, index) => (
+                  <tr key={`${item.ulp}-${item.nama}-${index}`} className={`hover:bg-slate-50 transition-colors ${item.no <= 6 && item.total > 0 ? 'bg-yellow-50/30' : ''}`}>
                     <td className="px-6 py-3 font-medium text-slate-400">
                       {item.no === 1 && item.total > 0 ? '🥇' : 
                        item.no === 2 && item.total > 0 ? '🥈' : 
