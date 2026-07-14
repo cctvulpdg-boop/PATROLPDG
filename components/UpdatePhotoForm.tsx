@@ -34,10 +34,14 @@ export const UpdatePhotoForm: React.FC<UpdatePhotoFormProps> = ({ report, onSubm
       }
       return clean;
     }
-    if (clean.includes('drive.google.com/file/d/')) {
-      const id = clean.split('/d/')[1]?.split('/')[0];
-      if (id) return `https://lh3.googleusercontent.com/d/${id}`;
+    
+    // Extract Google Drive File ID using regex to cover all link formats
+    const driveIdRegex = /(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=)([^/\s?&]+)/;
+    const match = clean.match(driveIdRegex);
+    if (match && match[1]) {
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
     }
+    
     return clean;
   };
 
