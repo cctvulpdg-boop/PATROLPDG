@@ -18,6 +18,8 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
   const [keypoint, setKeypoint] = useState(editData?.keypoint || '');
   const [titikStart, setTitikStart] = useState(editData?.titikStart || '');
   const [titikFinish, setTitikFinish] = useState(editData?.titikFinish || '');
+  const [jumlahTiang, setJumlahTiang] = useState(editData?.jumlahTiang || '');
+  const [jumlahKms, setJumlahKms] = useState(editData?.jumlahKms || '');
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -129,6 +131,8 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
       keypoint,
       titikStart,
       titikFinish,
+      jumlahTiang,
+      jumlahKms,
       photos: {
         sebelum: photosSebelum,
         sesudah: photosSesudah
@@ -295,6 +299,33 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
               placeholder="LOKASI SELESAI PATROL"
               value={titikFinish}
               onChange={(e) => setTitikFinish(e.target.value)}
+            />
+          </div>
+
+          <div>
+             <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Jumlah Tiang</label>
+             <input 
+              required
+              type="number" 
+              min="0"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-sm transition-all"
+              placeholder="JUMLAH TIANG YANG DIPATROL"
+              value={jumlahTiang}
+              onChange={(e) => setJumlahTiang(e.target.value)}
+            />
+          </div>
+
+          <div>
+             <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Jumlah KMS</label>
+             <input 
+              required
+              type="number" 
+              step="any"
+              min="0"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-sm transition-all"
+              placeholder="JUMLAH KMS YANG DIPATROL"
+              value={jumlahKms}
+              onChange={(e) => setJumlahKms(e.target.value)}
             />
           </div>
         </div>

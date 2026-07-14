@@ -156,6 +156,20 @@ export const DataTable: React.FC<DataTableProps> = ({ reports, onEdit }) => {
                         <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                         <span className="font-bold">FINISH:</span> {report.titikFinish}
                       </div>
+                      {(report.jumlahTiang || report.jumlahKms) && (
+                        <div className="mt-2 pt-2 border-t border-slate-100 flex flex-wrap gap-2 text-[9px] text-slate-600 font-bold">
+                          {report.jumlahTiang && (
+                            <span className="bg-slate-100 px-2 py-0.5 rounded flex items-center gap-1">
+                              ⚡ Tiang: <span className="font-black text-slate-800">{report.jumlahTiang}</span>
+                            </span>
+                          )}
+                          {report.jumlahKms && (
+                            <span className="bg-slate-100 px-2 py-0.5 rounded flex items-center gap-1">
+                              📏 KMS: <span className="font-black text-slate-800">{report.jumlahKms}</span>
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </td>
                   <td className="px-4 py-4 align-top">

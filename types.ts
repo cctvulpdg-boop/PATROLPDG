@@ -27,6 +27,8 @@ export interface ReportData {
   keypoint: string;
   titikStart: string;
   titikFinish: string;
+  jumlahTiang?: string;
+  jumlahKms?: string;
   photos: {
     sebelum: (string | null)[]; // Array of 10 URLs/Base64
     sesudah: (string | null)[]; // Array of 10 URLs/Base64
@@ -57,4 +59,4 @@ export interface DriveFile {
   webContentLink?: string;
 }
 
-export type ViewState = 'LOGIN' | 'CONFIG' | 'DASHBOARD' | 'INPUT' | 'TABLE' | 'SETTINGS' | 'ABOUT' | 'REKAP' | 'UPDATE_LIST' | 'UPDATE_FORM' | 'BACKUP';
+export type ViewState = 'LOGIN' | 'CONFIG' | 'DASHBOARD' | 'INPUT' | 'TABLE' | 'SETTINGS' | 'ABOUT' | 'REKAP' | 'REKAP_TIANG_KMS' | 'UPDATE_LIST' | 'UPDATE_FORM' | 'BACKUP';

@@ -23,6 +23,7 @@ import { Dashboard } from './components/Dashboard';
 import { DataTable } from './components/DataTable';
 import { AdminSettings } from './components/AdminSettings';
 import { AdminRekap } from './components/AdminRekap';
+import { AdminRekapTiangKms } from './components/AdminRekapTiangKms';
 import { FileBackup } from './components/FileBackup';
 import { LoginConfig } from './components/LoginConfig';
 import { UpdateList } from './components/UpdateList';
@@ -950,6 +951,10 @@ const App: React.FC = () => {
                     <ClipboardList className="w-3.5 h-3.5" />
                     Rekap Petugas
                   </button>
+                  <button onClick={() => setView('REKAP_TIANG_KMS')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'REKAP_TIANG_KMS' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
+                    <BarChart3 className="w-3.5 h-3.5" />
+                    Rekap Tiang & KMS
+                  </button>
                   <button onClick={() => setView('BACKUP')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'BACKUP' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
                     <Database className="w-3.5 h-3.5" />
                     File BackUp
@@ -988,6 +993,7 @@ const App: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
         {view === 'DASHBOARD' && <Dashboard reports={filteredReportsForTable.filter(r => !session.ulp || r.ulp === session.ulp)} masterData={masterData} />}
         {view === 'REKAP' && role === UserRole.ADMIN && <AdminRekap reports={reports} masterData={masterData} />}
+        {view === 'REKAP_TIANG_KMS' && role === UserRole.ADMIN && <AdminRekapTiangKms reports={reports} masterData={masterData} />}
         {view === 'BACKUP' && role === UserRole.ADMIN && (
           <FileBackup 
             files={backupFiles} 

@@ -157,7 +157,7 @@ export const UpdatePhotoForm: React.FC<UpdatePhotoFormProps> = ({ report, onSubm
       </div>
 
       {/* Info Laporan Ringkas */}
-      <div className="p-4 bg-slate-50 border-b border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div className="p-4 bg-slate-50 border-b border-slate-200 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
           <div>
             <div className="text-[8px] font-black text-slate-400 uppercase">Keypoint</div>
             <div className="text-[10px] font-bold text-slate-700">{report.keypoint}</div>
@@ -173,6 +173,14 @@ export const UpdatePhotoForm: React.FC<UpdatePhotoFormProps> = ({ report, onSubm
           <div>
             <div className="text-[8px] font-black text-slate-400 uppercase">Finish</div>
             <div className="text-[10px] font-bold text-slate-700 truncate">{report.titikFinish}</div>
+          </div>
+          <div>
+            <div className="text-[8px] font-black text-slate-400 uppercase">Tiang</div>
+            <div className="text-[10px] font-bold text-slate-700 truncate">{report.jumlahTiang || '-'}</div>
+          </div>
+          <div>
+            <div className="text-[8px] font-black text-slate-400 uppercase">KMS</div>
+            <div className="text-[10px] font-bold text-slate-700 truncate">{report.jumlahKms || '-'}</div>
           </div>
       </div>
 
