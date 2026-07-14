@@ -1,0 +1,7 @@
+{
+  "name": "PLN ES Padang Yandal Patrol",
+  "description": "A comprehensive monitoring application for special assignments (Penugasan Khusus) featuring role-based access, dependent data inputs, photo evidence collection, and analytical dashboards.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

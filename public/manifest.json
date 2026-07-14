@@ -1,0 +1,25 @@
+{
+  "name": "Yandal Patrol",
+  "short_name": "Yandal Patrol",
+  "description": "Aplikasi Yandal Patrol Monitoring UL Padang",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1d36",
+  "theme_color": "#0f1d36",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "https://lh3.googleusercontent.com/d/1ayQWBX032KZs0Cl86OzJO1lxqv-5RDds",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://lh3.googleusercontent.com/d/1ayQWBX032KZs0Cl86OzJO1lxqv-5RDds",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
