@@ -961,7 +961,7 @@ const App: React.FC = () => {
                   </button>
                   <button onClick={() => setView('SETTINGS')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'SETTINGS' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
                     <Sliders className="w-3.5 h-3.5" />
-                    Kelola Data
+                    Pengaturan
                   </button>
                 </>
               )}
@@ -981,6 +981,12 @@ const App: React.FC = () => {
                 <FileText className="w-3.5 h-3.5" />
                 Data Laporan
               </button>
+              {role !== UserRole.ADMIN && (
+                <button onClick={() => setView('SETTINGS')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'SETTINGS' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
+                  <Sliders className="w-3.5 h-3.5" />
+                  Pengaturan
+                </button>
+              )}
               <button onClick={() => setView('ABOUT')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'ABOUT' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
                 <Info className="w-3.5 h-3.5" />
                 Tentang
@@ -1022,6 +1028,31 @@ const App: React.FC = () => {
               setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd);
             }}
           />
+        )}
+        {view === 'SETTINGS' && role !== UserRole.ADMIN && (
+          <div className="max-w-2xl mx-auto bg-white p-8 sm:p-12 rounded-[2rem] shadow-xl border border-slate-200 text-center space-y-6 animate-fade-in my-8">
+            <div className="w-20 h-20 bg-amber-50 rounded-[2rem] shadow-inner flex items-center justify-center mx-auto border border-amber-100 text-amber-500">
+              <Lock className="w-10 h-10" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Akses Terbatas</h2>
+              <p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+                Menu Pengaturan ini berisi pengelolaan data master (Petugas, Penyulang, dan Keypoint) serta konfigurasi database yang hanya dapat dimodifikasi oleh Administrator.
+              </p>
+            </div>
+            <div className="p-6 bg-slate-50 rounded-2xl text-left border border-slate-100 max-w-md mx-auto shadow-sm">
+              <h4 className="text-xs font-black text-slate-700 uppercase tracking-wider mb-3.5 flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-[#005bd4]" />
+                Cara Mengakses Menu Pengaturan:
+              </h4>
+              <ol className="list-decimal list-inside text-xs text-slate-600 space-y-2.5 leading-relaxed">
+                <li>Klik tombol <strong className="text-red-600 font-bold">Logout</strong> di kanan atas layar untuk keluar dari sesi Anda saat ini.</li>
+                <li>Pada halaman login awal, silakan pilih opsi <strong className="text-primary font-bold">Login Admin</strong>.</li>
+                <li>Masukkan sandi khusus Admin (Sandi Default: <strong className="font-mono text-slate-800 bg-slate-200 px-1.5 py-0.5 rounded text-xs">Adminpdg</strong>).</li>
+                <li>Setelah berhasil masuk, Anda akan memiliki akses penuh ke menu <strong className="text-[#f1ab00] font-bold">Pengaturan</strong>.</li>
+              </ol>
+            </div>
+          </div>
         )}
         {view === 'INPUT' && role !== UserRole.GUEST && <InputForm key={editingReport?.id || 'new-report'} onSubmit={handleSaveReport} onCancel={() => setView('TABLE')} masterData={masterData} sessionData={session} editData={editingReport} />}
         {view === 'UPDATE_LIST' && <UpdateList reports={reports} session={session} onUpdate={handleUpdatePhoto} />}

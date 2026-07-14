@@ -4,7 +4,7 @@ import { BACKUP_FOLDER_ID } from '../constants';
 /**
  * URL Google Apps Script
  */
-const GOOGLE_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbztyuqi3TGAOix8VHJJxWbzzUXXwKFhldgGvY4J6JzfF3l4UluxCpOEPkNg2D8DqqOx/exec'; 
+const GOOGLE_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec'; 
 
 export const api = {
   getAllData: async () => {
