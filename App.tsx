@@ -315,7 +315,7 @@ const App: React.FC = () => {
 
   const handleAdminLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminPassword === 'Adminbkt') {
+    if (adminPassword === 'Adminpdg') {
       setRole(UserRole.ADMIN);
       setView('DASHBOARD');
       setShowAdminLogin(false);
