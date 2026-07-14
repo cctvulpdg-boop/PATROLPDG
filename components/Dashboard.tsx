@@ -4,9 +4,10 @@ import { ReportData, ULPName } from '../types';
 
 interface DashboardProps {
   reports: ReportData[];
+  masterData?: Record<string, any>;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ reports, masterData }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -23,11 +24,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
   // 2. Hitung statistik per ULP
   const statsPerULP = useMemo(() => {
     const stats: Record<string, number> = {};
-    Object.values(ULPName).forEach(name => {
+    const ulpList = masterData && Object.keys(masterData).length > 0
+      ? Object.keys(masterData)
+      : Object.values(ULPName);
+    
+    ulpList.forEach(name => {
       stats[name] = filteredReports.filter(r => r.ulp === name).length;
     });
     return stats;
-  }, [filteredReports]);
+  }, [filteredReports, masterData]);
 
   // 3. Hitung statistik per Penyulang
   const statsPerPenyulang = useMemo(() => {
@@ -84,8 +89,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
       </div>
 
       {/* Main Scorecard UP3 */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="md:col-span-4 bg-gradient-to-br from-primary to-cyan-900 p-8 rounded-[2rem] shadow-xl shadow-cyan-100 text-white flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="col-span-full bg-gradient-to-br from-primary to-cyan-900 p-8 rounded-[2rem] shadow-xl shadow-cyan-100 text-white flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-10 transform group-hover:scale-110 transition-transform duration-700">
             <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
@@ -109,7 +114,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
         </div>
 
         {/* Individual ULP Scorecards */}
-        {Object.values(ULPName).map((name) => (
+        {(masterData && Object.keys(masterData).length > 0 ? Object.keys(masterData) : Object.values(ULPName)).map((name) => (
           <div key={name} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow group">
             <div className="flex justify-between items-start mb-4">
               <div className="p-2.5 bg-slate-50 rounded-xl text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -118,7 +123,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports }) => {
                 </svg>
               </div>
               <div className="text-right">
-                <span className="text-3xl font-black text-slate-800 tracking-tight">{statsPerULP[name]}</span>
+                <span className="text-3xl font-black text-slate-800 tracking-tight">{statsPerULP[name] || 0}</span>
               </div>
             </div>
             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{name}</h4>
