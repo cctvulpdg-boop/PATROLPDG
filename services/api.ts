@@ -31,6 +31,10 @@ export const api = {
         throw new Error("Database mengembalikan format HTML. Pastikan skrip dideploy sebagai 'Anyone'.");
       }
 
+      if (text.trim() === "Method GET OK" || (!text.trim().startsWith('{') && !text.trim().startsWith('['))) {
+        throw new Error("Google Apps Script mengembalikan 'Method GET OK'. Pastikan handler 'getAll' pada skrip Apps Script Anda sudah diimplementasikan dan di-deploy sebagai 'Anyone'.");
+      }
+
       try {
         const data = JSON.parse(text);
         return data;

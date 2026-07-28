@@ -15,7 +15,9 @@ import {
   Info,
   Plus,
   ArrowLeft,
-  LogOut
+  LogOut,
+  AlertTriangle,
+  X
 } from 'lucide-react';
 import { UserRole, ViewState, ReportData, ULPName, ULPData, LoginSession, DriveFile } from './types';
 import { InputForm } from './components/InputForm';
@@ -24,7 +26,6 @@ import { DataTable } from './components/DataTable';
 import { AdminSettings } from './components/AdminSettings';
 import { AdminRekap } from './components/AdminRekap';
 import { AdminRekapTiangKms } from './components/AdminRekapTiangKms';
-import { FileBackup } from './components/FileBackup';
 import { LoginConfig } from './components/LoginConfig';
 import { UpdateList } from './components/UpdateList';
 import { UpdatePhotoForm } from './components/UpdatePhotoForm';
@@ -811,6 +812,37 @@ const App: React.FC = () => {
 
             {/* CTAs */}
             <div className="space-y-4 max-w-sm sm:max-w-md mx-auto w-full">
+              {errorLoad && (
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl shadow-sm text-left relative">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-amber-100 text-amber-800 rounded-xl shrink-0">
+                      <AlertTriangle className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Status Server Apps Script</h4>
+                      <p className="text-xs text-amber-800 font-medium leading-relaxed">{errorLoad}</p>
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <button
+                          onClick={() => fetchData()}
+                          className="px-3 py-1.5 bg-amber-800 hover:bg-amber-900 text-white rounded-lg text-[10px] font-black uppercase tracking-wider transition-all shadow-sm"
+                        >
+                          Coba Muat Ulang
+                        </button>
+                        <button
+                          onClick={() => { setIsDemoMode(true); setErrorLoad(null); }}
+                          className="px-3 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
+                        >
+                          Gunakan Mode Offline
+                        </button>
+                      </div>
+                    </div>
+                    <button onClick={() => setErrorLoad(null)} className="text-amber-500 hover:text-amber-800 p-1">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {!showAdminLogin ? (
                 <>
                   {/* Button 1: LOGIN PETUGAS */}
@@ -955,10 +987,6 @@ const App: React.FC = () => {
                     <BarChart3 className="w-3.5 h-3.5" />
                     Rekap Tiang & KMS
                   </button>
-                  <button onClick={() => setView('BACKUP')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'BACKUP' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
-                    <Database className="w-3.5 h-3.5" />
-                    File BackUp
-                  </button>
                   <button onClick={() => setView('SETTINGS')} className={`px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider whitespace-nowrap transition-all duration-150 flex items-center gap-2 ${view === 'SETTINGS' ? 'bg-[#f1ab00] text-[#0f1d36] shadow-md font-black scale-102' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}>
                     <Sliders className="w-3.5 h-3.5" />
                     Pengaturan
@@ -997,17 +1025,39 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+        {errorLoad && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-2xl shadow-sm text-left relative">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-amber-100 text-amber-800 rounded-xl shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="flex-1 space-y-2">
+                <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Status Server Database Apps Script</h4>
+                <p className="text-xs text-amber-800 font-medium leading-relaxed">{errorLoad}</p>
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <button
+                    onClick={() => fetchData()}
+                    className="px-3 py-1.5 bg-amber-800 hover:bg-amber-900 text-white rounded-lg text-[10px] font-black uppercase tracking-wider transition-all shadow-sm"
+                  >
+                    Coba Muat Ulang
+                  </button>
+                  <button
+                    onClick={() => { setIsDemoMode(true); setErrorLoad(null); }}
+                    className="px-3 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
+                  >
+                    Gunakan Mode Offline
+                  </button>
+                </div>
+              </div>
+              <button onClick={() => setErrorLoad(null)} className="text-amber-500 hover:text-amber-800 p-1">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
         {view === 'DASHBOARD' && <Dashboard reports={filteredReportsForTable.filter(r => !session.ulp || r.ulp === session.ulp)} masterData={masterData} />}
         {view === 'REKAP' && role === UserRole.ADMIN && <AdminRekap reports={reports} masterData={masterData} />}
         {view === 'REKAP_TIANG_KMS' && role === UserRole.ADMIN && <AdminRekapTiangKms reports={reports} masterData={masterData} />}
-        {view === 'BACKUP' && role === UserRole.ADMIN && (
-          <FileBackup 
-            files={backupFiles} 
-            loading={isBackupLoading} 
-            error={backupError} 
-            onRefresh={() => fetchBackupFiles(true)} 
-          />
-        )}
         {view === 'SETTINGS' && role === UserRole.ADMIN && (
           <AdminSettings 
             masterData={masterData}
