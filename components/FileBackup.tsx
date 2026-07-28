@@ -15,6 +15,54 @@ const ITEMS_PER_PAGE = 20;
 export const FileBackup: React.FC<FileBackupProps> = ({ files, loading, error, onRefresh }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
+  const [showGasGuide, setShowGasGuide] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  const driveFolderUrl = `https://drive.google.com/drive/folders/${BACKUP_FOLDER_ID}`;
+
+  const gasCodeSnippet = `// Tambahkan fungsi ini di Google Apps Script Anda (Code.gs):
+
+function doGet(e) {
+  var action = e ? e.parameter.action : "";
+  if (action === "getBackupFiles") {
+    return getBackupFiles(e);
+  }
+  // Logika doGet Anda lainnya...
+  return ContentService.createTextOutput("Method GET OK");
+}
+
+function getBackupFiles(e) {
+  try {
+    var folderId = (e && e.parameter.folderId) ? e.parameter.folderId : "${BACKUP_FOLDER_ID}";
+    var folder = DriveApp.getFolderById(folderId);
+    var files = folder.getFiles();
+    var result = [];
+    
+    while (files.hasNext()) {
+      var file = files.next();
+      result.push({
+        id: file.getId(),
+        name: file.getName(),
+        size: file.getSize().toString(),
+        mimeType: file.getMimeType(),
+        createdTime: file.getDateCreated().toISOString(),
+        webContentLink: file.getDownloadUrl() || ("https://drive.google.com/uc?export=download&id=" + file.getId())
+      });
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(result))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(gasCodeSnippet);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
 
   const filteredFiles = useMemo(() => {
     return files.filter(file => 
@@ -82,16 +130,30 @@ export const FileBackup: React.FC<FileBackupProps> = ({ files, loading, error, o
             </p>
           </div>
         </div>
-        <button 
-          onClick={onRefresh}
-          disabled={loading}
-          className="bg-primary text-white px-5 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-cyan-800 transition-all disabled:opacity-50"
-        >
-          <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          Refresh Daftar
-        </button>
+        <div className="flex items-center gap-2">
+          <a
+            href={driveFolderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-emerald-600 text-white px-4 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-md flex items-center gap-1.5 hover:bg-emerald-700 transition-all active:scale-95"
+            title="Buka Folder Google Drive"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            <span>Buka Google Drive</span>
+          </a>
+          <button 
+            onClick={onRefresh}
+            disabled={loading}
+            className="bg-primary text-white px-5 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-cyan-800 transition-all disabled:opacity-50"
+          >
+            <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh Daftar
+          </button>
+        </div>
       </div>
 
       <div className="relative">
@@ -117,19 +179,79 @@ export const FileBackup: React.FC<FileBackupProps> = ({ files, loading, error, o
             <p className="text-slate-500 font-bold animate-pulse uppercase text-xs tracking-widest">Memuat Daftar File...</p>
           </div>
         ) : error ? (
-          <div className="flex flex-col items-center justify-center h-[400px] p-8 text-center gap-4">
-            <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
+          <div className="p-8 space-y-6">
+            <div className="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-lg font-black text-rose-800 uppercase tracking-tight">Perhatian Layanan Backup</h3>
+                <p className="text-slate-600 font-bold text-xs max-w-xl mx-auto leading-relaxed">{error}</p>
+              </div>
+
+              <div className="flex flex-wrap justify-center items-center gap-3 pt-2">
+                <a
+                  href={driveFolderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 active:scale-95"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  <span>Buka Folder Google Drive Langsung</span>
+                </a>
+                <button 
+                  onClick={onRefresh}
+                  className="bg-slate-800 hover:bg-slate-900 text-white px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm"
+                >
+                  Coba Lagi
+                </button>
+              </div>
             </div>
-            <p className="text-slate-600 font-bold max-w-md">{error}</p>
-            <button 
-              onClick={onRefresh}
-              className="text-primary font-black uppercase text-xs tracking-widest hover:underline"
-            >
-              Coba Lagi
-            </button>
+
+            {/* Toggle Panduan Update GAS */}
+            <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+              <button
+                onClick={() => setShowGasGuide(!showGasGuide)}
+                className="w-full p-4 text-left font-black text-xs text-slate-700 uppercase tracking-wider flex items-center justify-between hover:bg-slate-100 transition-colors"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  Panduan Menambahkan Fitur Backup di Google Apps Script (Untuk Admin)
+                </span>
+                <span className="text-slate-400 font-mono text-sm">{showGasGuide ? '▲ Sembunyikan' : '▼ Tampilkan'}</span>
+              </button>
+
+              {showGasGuide && (
+                <div className="p-6 border-t border-slate-200 space-y-4 bg-white text-xs">
+                  <ol className="list-decimal list-inside space-y-2 text-slate-600 font-medium leading-relaxed">
+                    <li>Buka proyek <strong>Google Apps Script</strong> yang terhubung dengan Spreadsheet Anda.</li>
+                    <li>Tambahkan fungsi <code className="bg-slate-100 text-indigo-600 font-mono px-1 py-0.5 rounded">getBackupFiles(e)</code> berikut ke file script Anda:</li>
+                  </ol>
+
+                  <div className="relative">
+                    <pre className="bg-slate-900 text-slate-100 p-4 rounded-xl text-[11px] font-mono overflow-x-auto leading-normal">
+                      {gasCodeSnippet}
+                    </pre>
+                    <button
+                      onClick={handleCopyCode}
+                      className="absolute top-2 right-2 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all"
+                    >
+                      {copiedCode ? '✓ Berhasil Disalin' : 'Salin Kode'}
+                    </button>
+                  </div>
+
+                  <p className="text-slate-500 italic text-[11px]">
+                    * Setelah menyimpan kode, pastikan klik <strong>Deploy &gt; New Deployment &gt; Execute as: Me &gt; Who has access: Anyone</strong> lalu klik Deploy.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         ) : filteredFiles.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[400px] p-8 text-center gap-4">
@@ -203,9 +325,10 @@ export const FileBackup: React.FC<FileBackupProps> = ({ files, loading, error, o
         </svg>
         <div className="text-xs text-amber-800 font-medium leading-relaxed">
           <p className="font-black uppercase mb-1">Informasi:</p>
-          <p>Daftar di atas menampilkan file backup yang tersimpan di folder Google Drive khusus. Klik tombol "Download" untuk mengunduh file ke perangkat Anda. File tidak dapat dibuka langsung untuk menjaga keamanan data.</p>
+          <p>Daftar di atas menampilkan file backup yang tersimpan di folder Google Drive khusus. Klik tombol "Download" atau "Buka Google Drive" untuk mengunduh/melihat file secara langsung.</p>
         </div>
       </div>
     </div>
   );
 };
+
