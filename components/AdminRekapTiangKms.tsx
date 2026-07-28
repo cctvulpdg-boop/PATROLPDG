@@ -1,30 +1,87 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Download, SlidersHorizontal, Milestone, Compass, FileText, BarChart3, HelpCircle } from 'lucide-react';
-import { ReportData, ULPName } from '../types';
+import { ReportData, ULPData, ULPName } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface AdminRekapTiangKmsProps {
   reports: ReportData[];
+  masterData?: Record<string, ULPData>;
 }
 
-export const AdminRekapTiangKms: React.FC<AdminRekapTiangKmsProps> = ({ reports }) => {
+export const AdminRekapTiangKms: React.FC<AdminRekapTiangKmsProps> = ({ reports, masterData }) => {
   // Filter States
   const [filterUlp, setFilterUlp] = useState<string>('');
   const [filterPenyulang, setFilterPenyulang] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  // Get all unique penyulangs from reports dynamically (filtered by ULP if selected)
-  const uniquePenyulangs = useMemo(() => {
-    const names = new Set<string>();
+  // 1. List Unit (ULP) bersumber dari masterData (spreadsheet) & reports
+  const ulpList = useMemo(() => {
+    const setULP = new Set<string>();
+
+    if (masterData) {
+      (Object.values(masterData) as ULPData[]).forEach(u => {
+        if (u.name) setULP.add(u.name);
+      });
+      Object.keys(masterData).forEach(k => {
+        if (k) setULP.add(k);
+      });
+    }
+
+    reports.forEach(r => {
+      if (r.ulp) setULP.add(r.ulp);
+    });
+
+    if (setULP.size === 0) {
+      Object.values(ULPName).forEach(u => setULP.add(u));
+    }
+
+    return Array.from(setULP).filter(Boolean).sort();
+  }, [masterData, reports]);
+
+  // 2. List Penyulang bersumber dari masterData (spreadsheet) & reports berdasarkan ULP terpilih
+  const availablePenyulangList = useMemo(() => {
+    const setPenyulang = new Set<string>();
+
+    if (masterData) {
+      const masterValues = Object.values(masterData) as ULPData[];
+      if (filterUlp) {
+        const ulpObj = masterData[filterUlp] || masterValues.find(u => u.name === filterUlp);
+        if (ulpObj && Array.isArray(ulpObj.penyulang)) {
+          ulpObj.penyulang.forEach(p => {
+            if (p && p.trim()) setPenyulang.add(p.trim().toUpperCase());
+          });
+        }
+      } else {
+        masterValues.forEach(ulpObj => {
+          if (ulpObj && Array.isArray(ulpObj.penyulang)) {
+            ulpObj.penyulang.forEach(p => {
+              if (p && p.trim()) setPenyulang.add(p.trim().toUpperCase());
+            });
+          }
+        });
+      }
+    }
+
     reports.forEach(r => {
       if (filterUlp && r.ulp !== filterUlp) return;
-      if (r.penyulang && r.penyulang.trim() !== '') {
-        names.add(r.penyulang.trim().toUpperCase());
+      if (r.penyulang && r.penyulang.trim()) {
+        setPenyulang.add(r.penyulang.trim().toUpperCase());
       }
     });
-    return Array.from(names).sort();
-  }, [reports, filterUlp]);
+
+    return Array.from(setPenyulang).sort();
+  }, [masterData, reports, filterUlp]);
+
+  // Reset filterPenyulang jika penyulang terpilih tidak tersedia di ULP baru
+  useEffect(() => {
+    if (filterPenyulang) {
+      const exists = availablePenyulangList.includes(filterPenyulang.toUpperCase());
+      if (!exists) {
+        setFilterPenyulang('');
+      }
+    }
+  }, [filterUlp, availablePenyulangList, filterPenyulang]);
 
   // 1. Process and Filter Reports
   const filteredReports = useMemo(() => {
@@ -319,7 +376,7 @@ export const AdminRekapTiangKms: React.FC<AdminRekapTiangKmsProps> = ({ reports 
               id="filter-ulp"
             >
               <option value="">-- Semua ULP --</option>
-              {Object.values(ULPName).map(val => (
+              {ulpList.map(val => (
                 <option key={val} value={val}>{val}</option>
               ))}
             </select>
@@ -335,7 +392,7 @@ export const AdminRekapTiangKms: React.FC<AdminRekapTiangKmsProps> = ({ reports 
               id="filter-penyulang"
             >
               <option value="">-- Semua Penyulang --</option>
-              {uniquePenyulangs.map(name => (
+              {availablePenyulangList.map(name => (
                 <option key={name} value={name}>{name}</option>
               ))}
             </select>
