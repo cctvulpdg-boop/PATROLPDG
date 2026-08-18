@@ -152,7 +152,7 @@ const App: React.FC = () => {
     });
     
     const dateStr = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    let message = `Laporan Yandal Patrol Hari ini : ${dateStr}\n`;
+    let message = `Laporan PEXASUS Hari ini : ${dateStr}\n`;
     ulpKeys.forEach(name => {
       message += `- ${name} : ${counts[name] || 0}\n`;
     });
@@ -168,7 +168,7 @@ const App: React.FC = () => {
       if (currentHour % 2 === 0 && lastPeriodicNotifyRef.current !== currentHour) {
         lastPeriodicNotifyRef.current = currentHour;
         const { message, totalToday } = generateSummaryMessage(currentReports);
-        sendBrowserNotification("Update Berkala Yandal Patrol", message);
+        sendBrowserNotification("Update Berkala PEXASUS", message);
         updateAppBadge(totalToday);
       }
     }
@@ -187,7 +187,7 @@ const App: React.FC = () => {
         if (lastReminderNotifyRef.current !== timeKey) {
           lastReminderNotifyRef.current = timeKey;
           sendBrowserNotification(
-            "Sudahkah Anda Melakukan Yandal Patrol hari ini ...?",
+            "Sudahkah Anda Melakukan PEXASUS hari ini ...?",
             "Jangan lupa untuk melaporkan kegiatan patroli Anda tepat waktu."
           );
         }
@@ -787,7 +787,7 @@ const App: React.FC = () => {
               <div className="absolute inset-0 bg-blue-100 rounded-full blur-3xl opacity-35 transform scale-110"></div>
               <img 
                 src={APP_LOGO} 
-                alt="Yandal Patrol Logo" 
+                alt="PEXASUS Logo" 
                 className="max-w-[280px] sm:max-w-md w-full h-auto object-contain relative hover:scale-[1.02] transition-transform duration-200" 
               />
             </div>
@@ -799,7 +799,7 @@ const App: React.FC = () => {
               <div className="flex items-center justify-center gap-3 mb-2">
                 <span className="h-[2px] w-6 bg-amber-400 rounded-full"></span>
                 <h3 className="text-xs sm:text-sm font-extrabold text-[#003c96] uppercase tracking-wider">
-                  Yandal Patrol Monitoring
+                  PEXASUS Monitoring
                 </h3>
                 <span className="h-[2px] w-6 bg-amber-400 rounded-full"></span>
               </div>
@@ -924,7 +924,7 @@ const App: React.FC = () => {
 
           {/* Footer Branding Credit */}
           <div className="text-center pt-8 text-[10px] text-slate-400 font-medium">
-            <span className="opacity-80">© {new Date().getFullYear()} PLN UP3 Padang — Yandal Patrol V{APP_VERSION}</span>
+            <span className="opacity-80">© {new Date().getFullYear()} PLN UP3 Padang — PEXASUS V{APP_VERSION}</span>
           </div>
 
         </div>
@@ -960,7 +960,7 @@ const App: React.FC = () => {
             </div>
             <div className="flex items-center gap-4">
               <div className="flex flex-col leading-none text-right">
-                <span className="font-extrabold text-sm text-white tracking-tight">Yandal Patrol</span>
+                <span className="font-extrabold text-sm text-white tracking-tight">PEXASUS</span>
                 <span className="text-[9px] text-[#f1ab00] font-black uppercase tracking-widest mt-0.5">{session.ulp || 'UP3 PADANG'}</span>
               </div>
               <div className="w-px h-8 bg-white/20 block"></div>
@@ -1136,7 +1136,7 @@ const App: React.FC = () => {
             <div className="bg-white rounded-[2rem] shadow-xl overflow-hidden border border-slate-200">
                <div className="bg-primary p-12 text-white text-center flex flex-col items-center">
                   <img src={APP_LOGO} alt="App" className="h-36 w-auto object-contain z-10 mb-6" />
-                  <h1 className="text-4xl font-black mb-1 uppercase">Yandal Patrol Monitoring</h1>
+                  <h1 className="text-4xl font-black mb-1 uppercase">PEXASUS Monitoring</h1>
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-white/20 px-4 py-1.5 rounded-full mt-3">Version {APP_VERSION}</span>
                </div>
                <div className="p-10 space-y-10">

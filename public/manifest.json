@@ -1,7 +1,7 @@
 {
-  "name": "Yandal Patrol",
-  "short_name": "Yandal Patrol",
-  "description": "Aplikasi Yandal Patrol Monitoring UL Padang",
+  "name": "PEXASUS",
+  "short_name": "PEXASUS",
+  "description": "Aplikasi PEXASUS Monitoring UL Padang",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f1d36",
