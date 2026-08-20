@@ -97,10 +97,10 @@ export const AdminRekap: React.FC<AdminRekapProps> = ({ reports, masterData }) =
       });
 
       // Headers Title blocks
-      // Row 1: REKAP REALISASI PETUGAS YANDAL PATROL
+      // Row 1: REKAP REALISASI PETUGAS PENUGASAN KHUSUS
       worksheet.mergeCells('A1:E1');
       const title1 = worksheet.getCell('A1');
-      title1.value = 'REKAP REALISASI PETUGAS YANDAL PATROL';
+      title1.value = 'REKAP REALISASI PETUGAS PENUGASAN KHUSUS';
       title1.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FF0F172A' } };
       title1.alignment = { horizontal: 'center', vertical: 'middle' };
 

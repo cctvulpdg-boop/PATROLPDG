@@ -501,10 +501,10 @@ const App: React.FC = () => {
       });
 
       // Write Custom Top Header Title blocks
-      // Baris 1: REKAP PELAKSANAAN PEKERJAAN YANDAL PATROL
+      // Baris 1: REKAP PELAKSANAAN PEKERJAAN PENUGASAN KHUSUS
       worksheet.mergeCells('A1:J1');
       const title1 = worksheet.getCell('A1');
-      title1.value = 'REKAP PELAKSANAAN PEKERJAAN YANDAL PATROL';
+      title1.value = 'REKAP PELAKSANAAN PEKERJAAN PENUGASAN KHUSUS';
       title1.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FF0F172A' } };
       title1.alignment = { horizontal: 'center', vertical: 'middle' };
 

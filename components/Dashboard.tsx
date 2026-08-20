@@ -57,7 +57,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ reports, masterData }) => 
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h2 className="text-2xl font-black text-slate-800 tracking-tight uppercase">Dashboard Monitoring</h2>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Realisasi Yandal Patrol • Unit Layanan Padang</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Realisasi Penugasan Khusus • Unit Layanan Padang</p>
         </div>
         
         <div className="flex flex-wrap items-end gap-3">
