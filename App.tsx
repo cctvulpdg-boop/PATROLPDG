@@ -946,27 +946,55 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <header className="bg-[#0f1d36] text-white shadow-xl z-20 sticky top-0 border-b border-[#1b2b48]">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-               <button onClick={handleBackToMenu} className="p-2 hover:bg-white/10 text-slate-300 hover:text-white rounded-xl transition-all group flex items-center gap-2">
-                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+      <header className="bg-gradient-to-r from-[#0a1526] via-[#0f1d36] to-[#132544] text-white shadow-2xl z-20 sticky top-0 border-b border-[#1b2b48]/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 py-2 sm:py-2.5 min-h-[72px] sm:min-h-[80px] flex justify-between items-center">
+            <div className="flex items-center gap-3 sm:gap-4">
+               <button onClick={handleBackToMenu} className="p-2 sm:p-2.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-xl border border-white/10 transition-all group flex items-center gap-2 shadow-sm">
+                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-amber-400" />
                  <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest">Kembali</span>
                </button>
-               <div className="w-px h-8 bg-white/20"></div>
-               <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('ABOUT')}>
-                 <img src={APP_LOGO} alt="App" className="h-8 object-contain brightness-110 drop-shadow-[0_0_8px_rgba(241,171,0,0.85)] hover:drop-shadow-[0_0_12px_rgba(241,171,0,1)] hover:scale-105 transition-all duration-200" />
+               <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+               
+               {/* Enhanced Dynamic Enlarged Logo */}
+               <div 
+                 className="relative group flex items-center gap-3 cursor-pointer py-1" 
+                 onClick={() => setView('ABOUT')}
+                 title="Tentang PEXASUS"
+               >
+                 <div className="absolute -inset-1.5 bg-gradient-to-r from-amber-400/30 via-yellow-500/20 to-cyan-500/30 rounded-2xl blur-md opacity-70 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
+                 <div className="relative p-1.5 sm:p-2 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 border border-white/15 group-hover:border-amber-400/50 shadow-inner group-hover:bg-white/15 transition-all duration-300 flex items-center justify-center">
+                   <img 
+                     src={APP_LOGO} 
+                     alt="PEXASUS Logo" 
+                     className="h-12 sm:h-14 md:h-16 w-auto object-contain brightness-110 drop-shadow-[0_0_10px_rgba(241,171,0,0.85)] group-hover:drop-shadow-[0_0_18px_rgba(241,171,0,1)] group-hover:scale-105 transition-all duration-300" 
+                   />
+                 </div>
+                 <div className="hidden md:flex flex-col leading-tight">
+                   <span className="text-xs font-black tracking-widest text-amber-400 uppercase drop-shadow-sm flex items-center gap-1.5">
+                     PEXASUS
+                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                   </span>
+                   <span className="text-[8px] font-bold text-slate-300 uppercase tracking-widest opacity-80">
+                     Sistem Monitoring Terpadu
+                   </span>
+                 </div>
                </div>
             </div>
-            <div className="flex items-center gap-4">
+            
+            <div className="flex items-center gap-3 sm:gap-4">
               <div className="flex flex-col leading-none text-right">
-                <span className="font-extrabold text-sm text-white tracking-tight">PEXASUS</span>
-                <span className="text-[9px] text-[#f1ab00] font-black uppercase tracking-widest mt-0.5">{session.ulp || 'UP3 PADANG'}</span>
+                <span className="font-black text-sm sm:text-base text-white tracking-tight flex items-center justify-end gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  PEXASUS
+                </span>
+                <span className="text-[9px] sm:text-[10px] text-[#f1ab00] font-black uppercase tracking-widest mt-1 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20">
+                  {session.ulp || 'UP3 PADANG'}
+                </span>
               </div>
-              <div className="w-px h-8 bg-white/20 block"></div>
-              <button onClick={handleLogout} className="text-[10px] text-white bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 hover:border-red-500 font-extrabold px-3 py-2 rounded-xl transition-all uppercase tracking-widest flex items-center gap-1.5">
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Logout</span>
+              <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent block"></div>
+              <button onClick={handleLogout} className="text-[10px] text-white bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 hover:border-red-500 font-extrabold px-3 py-2.5 rounded-xl transition-all uppercase tracking-widest flex items-center gap-1.5 shadow-sm active:scale-95">
+                <LogOut className="w-3.5 h-3.5 text-red-400" />
+                <span className="hidden xs:inline">Logout</span>
               </button>
             </div>
         </div>
