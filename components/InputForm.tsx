@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MONTHS, PHOTO_SECTIONS } from '../constants';
 import { ReportData, ULPData, LoginSession } from '../types';
 import { PhotoUpload } from './PhotoUpload';
+import { Edit3, List, Sparkles } from 'lucide-react';
 
 interface InputFormProps {
   onSubmit: (data: ReportData, isEdit: boolean) => Promise<void> | void;
@@ -43,31 +44,24 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
   const currentUlp = sessionData.ulp || editData?.ulp;
   const ulpData = currentUlp ? masterData[currentUlp] : null;
 
-  const [isCustomKeypoint, setIsCustomKeypoint] = useState(false);
+  const [isManualMode, setIsManualMode] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const availableKeypoints = (ulpData && penyulang) ? (ulpData.keypoints?.[penyulang] || []) : [];
 
-  // Reset keypoint if penyulang changes and it's not the initial edit data
+  // If editData is provided, synchronize keypoint
   useEffect(() => {
-    if (!editData || penyulang !== editData.penyulang) {
-      if (penyulang !== (editData?.penyulang || '')) {
-         setKeypoint('');
-         setIsCustomKeypoint(false);
-      }
-    } else if (editData && penyulang === editData.penyulang) {
+    if (editData && penyulang === editData.penyulang) {
       setKeypoint(editData.keypoint);
-      const isCustom = availableKeypoints.length === 0 || !availableKeypoints.includes(editData.keypoint);
-      setIsCustomKeypoint(isCustom);
     }
-  }, [penyulang, editData, availableKeypoints]);
+  }, [penyulang, editData]);
 
-  // Automatically enable custom keypoint if a penyulang has no keypoints predefined
+  // If no available keypoints exist, always stay in manual mode
   useEffect(() => {
-    if (penyulang && availableKeypoints.length === 0) {
-      setIsCustomKeypoint(true);
+    if (availableKeypoints.length === 0) {
+      setIsManualMode(true);
     }
-  }, [penyulang, availableKeypoints]);
+  }, [availableKeypoints.length]);
 
   const resizeImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -220,59 +214,122 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
             </select>
           </div>
 
-          <div className="md:col-span-2">
-             <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Nama Keypoint</label>
+          <div className="md:col-span-2 bg-slate-50/70 p-4 sm:p-5 rounded-2xl border border-slate-200">
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+               <div>
+                 <label className="block text-xs font-black text-slate-700 uppercase tracking-widest">
+                   Nama Keypoint <span className="text-red-500">*</span>
+                 </label>
+                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+                   Bisa diketik manual bebas atau memilih dari daftar keypoint
+                 </p>
+               </div>
+
+               {/* Mode Switcher Buttons */}
+               <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-sm self-start sm:self-auto">
+                 <button
+                   type="button"
+                   onClick={() => setIsManualMode(true)}
+                   className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                     isManualMode 
+                       ? 'bg-primary text-white shadow-sm' 
+                       : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                   }`}
+                 >
+                   <Edit3 className="w-3.5 h-3.5" />
+                   <span>Ketik Manual</span>
+                 </button>
+                 
+                 {availableKeypoints.length > 0 && (
+                   <button
+                     type="button"
+                     onClick={() => setIsManualMode(false)}
+                     className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                       !isManualMode 
+                         ? 'bg-primary text-white shadow-sm' 
+                         : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                     }`}
+                   >
+                     <List className="w-3.5 h-3.5" />
+                     <span>Pilih Daftar ({availableKeypoints.length})</span>
+                   </button>
+                 )}
+               </div>
+             </div>
+
              <div className="relative">
-                {!isCustomKeypoint && availableKeypoints.length > 0 ? (
-                  <select 
-                    required
-                    disabled={!penyulang}
-                    className={`w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-sm bg-white transition-all ${!penyulang ? 'opacity-50 cursor-not-allowed bg-slate-50' : 'cursor-pointer'}`}
-                    value={keypoint}
-                    onChange={(e) => {
-                      if (e.target.value === '__CUSTOM__') {
-                        setIsCustomKeypoint(true);
-                        setKeypoint('');
-                      } else {
-                        setKeypoint(e.target.value);
-                      }
-                    }}
-                  >
-                    <option value="">{penyulang ? `-- Pilih Keypoint untuk ${penyulang} --` : '-- Pilih Penyulang Dahulu --'}</option>
-                    {availableKeypoints.map(kp => <option key={kp} value={kp}>{kp}</option>)}
-                    <option value="__CUSTOM__">✍️ Ketik Keypoint Manual...</option>
-                  </select>
-                ) : (
-                  <div className="relative">
-                    <input 
-                      required
-                      disabled={!penyulang}
-                      type="text"
-                      className={`w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-sm bg-white transition-all pr-32 ${!penyulang ? 'opacity-50 cursor-not-allowed bg-slate-50' : ''}`}
-                      placeholder={penyulang ? "Ketik nama Keypoint..." : "Pilih penyulang dahulu"}
-                      value={keypoint}
-                      onChange={(e) => setKeypoint(e.target.value)}
-                    />
+                {isManualMode || availableKeypoints.length === 0 ? (
+                  <div className="space-y-3">
+                    <div className="relative">
+                      <input 
+                        required
+                        type="text"
+                        list="keypoint-options-list"
+                        className="w-full px-4 py-3.5 border border-slate-300 rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none font-bold text-sm bg-white shadow-inner transition-all placeholder:text-slate-400 uppercase"
+                        placeholder="KETIK NAMA KEYPOINT MANUAL (CONTOH: RECLOSER AIR TAWAR, LBS VILLA, DLL)..."
+                        value={keypoint}
+                        onChange={(e) => setKeypoint(e.target.value.toUpperCase())}
+                      />
+                      <datalist id="keypoint-options-list">
+                        {availableKeypoints.map(kp => (
+                          <option key={kp} value={kp} />
+                        ))}
+                      </datalist>
+                    </div>
+
+                    {/* Quick suggestion chips */}
                     {availableKeypoints.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsCustomKeypoint(false);
-                          setKeypoint('');
-                        }}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#004bb4] font-black text-[9px] uppercase tracking-widest bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg border border-slate-200 transition-all"
-                      >
-                        Pilih dari Daftar
-                      </button>
+                      <div className="pt-1">
+                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Klik rekomendasi untuk mengisi otomatis:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
+                          {availableKeypoints.map(kp => (
+                            <button
+                              key={kp}
+                              type="button"
+                              onClick={() => setKeypoint(kp)}
+                              className={`text-[11px] font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                                keypoint === kp 
+                                  ? 'bg-amber-100 border-amber-400 text-amber-900 shadow-sm font-black' 
+                                  : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700 hover:border-slate-300'
+                              }`}
+                            >
+                              {kp}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {!availableKeypoints.length && penyulang && (
+                      <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                        <p className="text-[10px] font-bold text-amber-800 uppercase tracking-wide">
+                          Belum ada data keypoint tersimpan untuk penyulang ini. Silakan langsung ketik nama keypoint secara manual di kolom input di atas.
+                        </p>
+                      </div>
                     )}
                   </div>
-                )}
-                {!availableKeypoints.length && penyulang && (
-                  <div className="mt-2 p-3 bg-amber-50 rounded-lg border border-amber-100 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-[10px] font-bold text-amber-700 uppercase">Belum ada pilihan keypoint untuk penyulang ini di sistem. Anda dapat langsung mengetikkan namanya secara manual di atas.</p>
+                ) : (
+                  <div className="space-y-2">
+                    <select 
+                      required
+                      className="w-full px-4 py-3.5 border border-slate-300 rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none font-bold text-sm bg-white transition-all cursor-pointer"
+                      value={keypoint}
+                      onChange={(e) => {
+                        if (e.target.value === '__CUSTOM__') {
+                          setIsManualMode(true);
+                        } else {
+                          setKeypoint(e.target.value);
+                        }
+                      }}
+                    >
+                      <option value="">{penyulang ? `-- Pilih Keypoint untuk Penyulang ${penyulang} --` : '-- Pilih Keypoint --'}</option>
+                      {availableKeypoints.map(kp => <option key={kp} value={kp}>{kp}</option>)}
+                      <option value="__CUSTOM__">✍️ Ketik Manual Keypoint Lainnya...</option>
+                    </select>
                   </div>
                 )}
              </div>
