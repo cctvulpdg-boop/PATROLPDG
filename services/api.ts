@@ -5,7 +5,7 @@ import seedData from '../data/seedData.json';
 /**
  * URL Google Apps Script Default & Dynamic Configuration
  */
-const DEFAULT_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec'; 
+const DEFAULT_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec'; 
 
 export const getScriptUrl = (): string => {
   if (typeof window !== 'undefined') {
