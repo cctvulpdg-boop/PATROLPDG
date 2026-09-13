@@ -30,7 +30,7 @@ import { LoginConfig } from './components/LoginConfig';
 import { UpdateList } from './components/UpdateList';
 import { UpdatePhotoForm } from './components/UpdatePhotoForm';
 import { DATA_ULP as INITIAL_DATA_ULP, APP_VERSION } from './constants';
-import { api } from './services/api';
+import { api, getScriptUrl, setScriptUrl } from './services/api';
 
 const LOGO_URL = "https://plnes.co.id/_next/image?url=https%3A%2F%2Fcms.plnes.co.id%2Fuploads%2FLogo_HP_New_Temporary_09a9c5a521.png&w=750&q=75"; 
 const APP_LOGO = "https://lh3.googleusercontent.com/d/1ayQWBX032KZs0Cl86OzJO1lxqv-5RDds";
@@ -66,6 +66,9 @@ const App: React.FC = () => {
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [notifPermission, setNotifPermission] = useState<NotificationPermission>('default');
+
+  const [showScriptUrlModal, setShowScriptUrlModal] = useState(false);
+  const [modalGasUrlInput, setModalGasUrlInput] = useState(getScriptUrl());
   
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
@@ -244,12 +247,12 @@ const App: React.FC = () => {
         setBackupFiles(data);
         setLastBackupFetch(Date.now());
       } else if (data && (data as any).error) {
-        throw new Error((data as any).error);
+        setBackupError((data as any).error);
       } else {
-        throw new Error("Format data tidak valid");
+        setBackupFiles([]);
       }
     } catch (err: any) {
-      console.error("Error fetching backup files:", err);
+      console.warn("Info file backup:", err);
       setBackupError(err.message || "Gagal mengambil daftar file backup.");
     } finally {
       setIsBackupLoading(false);
@@ -278,6 +281,9 @@ const App: React.FC = () => {
         if (data.reports) {
           console.log(`Ditemukan ${data.reports.length} laporan.`);
           setReports(data.reports);
+          try {
+            localStorage.setItem('yandal_local_reports', JSON.stringify(data.reports));
+          } catch (e) {}
           
           if (data.reports.length > 0) {
             const sorted = [...data.reports].sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
@@ -323,13 +329,35 @@ const App: React.FC = () => {
             updatedMaster[k].name = k as any;
           });
           setMasterData(updatedMaster);
+          try {
+            localStorage.setItem('yandal_cached_master', JSON.stringify(updatedMaster));
+          } catch (e) {}
         }
       } else {
         throw new Error("Server tidak mengembalikan data.");
       }
     } catch (error: any) {
-      console.error("Gagal mengambil data:", error);
-      if (showLoading) setErrorLoad(error.message || "Gagal terhubung ke database.");
+      console.warn("Koneksi database langsung bermasalah, menggunakan data lokal/offline:", error?.message || error);
+      
+      // Load fallback cached data from localStorage if available
+      try {
+        const cachedReports = localStorage.getItem('yandal_local_reports');
+        if (cachedReports) {
+          const parsedReports = JSON.parse(cachedReports);
+          if (Array.isArray(parsedReports) && parsedReports.length > 0) {
+            setReports(parsedReports);
+          }
+        }
+        const cachedMaster = localStorage.getItem('yandal_cached_master');
+        if (cachedMaster) {
+          const parsedMaster = JSON.parse(cachedMaster);
+          if (parsedMaster && typeof parsedMaster === 'object') {
+            setMasterData(parsedMaster);
+          }
+        }
+      } catch (e) {
+        console.warn("Gagal memuat cache lokal:", e);
+      }
     } finally {
       if (showLoading) setIsLoading(false);
     }
@@ -829,6 +857,15 @@ const App: React.FC = () => {
                           Coba Muat Ulang
                         </button>
                         <button
+                          onClick={() => {
+                            setModalGasUrlInput(getScriptUrl());
+                            setShowScriptUrlModal(true);
+                          }}
+                          className="px-3 py-1.5 bg-amber-200 hover:bg-amber-300 text-amber-950 border border-amber-400 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
+                        >
+                          ⚙️ Ubah URL Apps Script
+                        </button>
+                        <button
                           onClick={() => { setIsDemoMode(true); setErrorLoad(null); }}
                           className="px-3 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
                         >
@@ -1070,6 +1107,15 @@ const App: React.FC = () => {
                     Coba Muat Ulang
                   </button>
                   <button
+                    onClick={() => {
+                      setModalGasUrlInput(getScriptUrl());
+                      setShowScriptUrlModal(true);
+                    }}
+                    className="px-3 py-1.5 bg-amber-200 hover:bg-amber-300 text-amber-950 border border-amber-400 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
+                  >
+                    ⚙️ Ubah URL Apps Script
+                  </button>
+                  <button
                     onClick={() => { setIsDemoMode(true); setErrorLoad(null); }}
                     className="px-3 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all"
                   >
@@ -1189,6 +1235,80 @@ const App: React.FC = () => {
                     <p className="text-[11px] text-slate-400 font-bold uppercase">© DD-2025 • IT Unit Layanan Bukittinggi</p>
                   </div>
                </div>
+            </div>
+          </div>
+        )}
+       {/* Script URL Settings Modal */}
+        {showScriptUrlModal && (
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 space-y-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">Pengaturan Endpoint Web App</h3>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
+                    Google Apps Script Web App URL
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowScriptUrlModal(false)}
+                  className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-all"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!modalGasUrlInput.trim().startsWith('https://script.google.com/')) {
+                    alert('URL harus diawali dengan https://script.google.com/macros/s/.../exec');
+                    return;
+                  }
+                  setScriptUrl(modalGasUrlInput.trim());
+                  setShowScriptUrlModal(false);
+                  setErrorLoad(null);
+                  fetchData(true);
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-xs font-black text-slate-600 uppercase tracking-wider mb-2">
+                    URL Aplikasi Web (Web App URL)
+                  </label>
+                  <textarea
+                    rows={3}
+                    className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs font-mono font-bold focus:ring-4 focus:ring-primary/10 outline-none bg-slate-50 leading-relaxed"
+                    placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                    value={modalGasUrlInput}
+                    onChange={(e) => setModalGasUrlInput(e.target.value)}
+                  />
+                  <p className="text-[10px] text-slate-400 font-medium mt-2 leading-normal">
+                    Pastikan skrip di-deploy sebagai Web App di Google Apps Script dengan akses <strong className="text-slate-700">"Anyone" (Siapa Saja)</strong>.
+                  </p>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 bg-primary hover:bg-cyan-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-cyan-100"
+                  >
+                    Simpan & Hubungkan Ulang
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setScriptUrl('');
+                      setModalGasUrlInput(getScriptUrl());
+                      setShowScriptUrlModal(false);
+                      setErrorLoad(null);
+                      fetchData(true);
+                    }}
+                    className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl font-black text-xs uppercase tracking-widest transition-all"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

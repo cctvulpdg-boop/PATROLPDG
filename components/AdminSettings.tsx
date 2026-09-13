@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { ULPName, ULPData } from '../types';
+import { getScriptUrl, setScriptUrl } from '../services/api';
+import { Link, Check, RefreshCw, Server, AlertCircle } from 'lucide-react';
 
 interface AdminSettingsProps {
   masterData: Record<string, ULPData>;
@@ -29,6 +31,37 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   
   const [activePenyulangForKeypoints, setActivePenyulangForKeypoints] = useState('');
   const [newKeypoint, setNewKeypoint] = useState('');
+
+  const [gasUrlInput, setGasUrlInput] = useState(getScriptUrl());
+  const [urlStatusMsg, setUrlStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSaveGasUrl = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!gasUrlInput.trim().startsWith('https://script.google.com/')) {
+      setUrlStatusMsg({
+        type: 'error',
+        text: 'URL harus diawali dengan https://script.google.com/macros/s/.../exec'
+      });
+      return;
+    }
+    setScriptUrl(gasUrlInput.trim());
+    setUrlStatusMsg({
+      type: 'success',
+      text: 'URL Endpoint Google Apps Script berhasil diperbarui! Silakan klik tombol muat ulang data.'
+    });
+    setTimeout(() => setUrlStatusMsg(null), 5000);
+    if (onInitDefault) onInitDefault();
+  };
+
+  const handleResetGasUrl = () => {
+    setScriptUrl('');
+    setGasUrlInput(getScriptUrl());
+    setUrlStatusMsg({
+      type: 'success',
+      text: 'URL Endpoint dikembalikan ke URL default.'
+    });
+    setTimeout(() => setUrlStatusMsg(null), 5000);
+  };
 
   const handleAddPetugasSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,6 +101,65 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       
+      {/* Google Apps Script Endpoint Configuration Card */}
+      <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-sm border border-slate-200 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-cyan-50 text-cyan-700 rounded-2xl border border-cyan-100">
+            <Server className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">Konfigurasi Endpoint Google Apps Script</h3>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+              Atur URL Web App Google Apps Script untuk koneksi Spreadsheet & Drive
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSaveGasUrl} className="space-y-3 pt-2">
+          <label className="block text-xs font-black text-slate-600 uppercase tracking-wider">
+            Web App URL (Google Apps Script)
+          </label>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              className="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-4 focus:ring-primary/10 outline-none bg-slate-50"
+              placeholder="https://script.google.com/macros/s/.../exec"
+              value={gasUrlInput}
+              onChange={(e) => setGasUrlInput(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="px-5 py-3 bg-primary hover:bg-cyan-800 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-cyan-100 flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <Check className="w-4 h-4" />
+                <span>Simpan URL</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleResetGasUrl}
+                className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap"
+                title="Reset ke URL default"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Reset</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        {urlStatusMsg && (
+          <div className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2 ${
+            urlStatusMsg.type === 'success' 
+              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
+              : 'bg-red-50 text-red-800 border border-red-200'
+          }`}>
+            {urlStatusMsg.type === 'success' ? <Check className="w-4 h-4 text-emerald-600 shrink-0" /> : <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />}
+            <span>{urlStatusMsg.text}</span>
+          </div>
+        )}
+      </div>
+
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

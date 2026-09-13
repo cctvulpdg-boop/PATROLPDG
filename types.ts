@@ -6,6 +6,17 @@ export enum UserRole {
 }
 
 export enum ULPName {
+  BELANTI = 'ULP BELANTI',
+  LUBUK_ALUNG = 'ULP LUBUK ALUNG',
+  PARIAMAN = 'ULP PARIAMAN',
+  TABING = 'ULP TABING',
+  INDARUNG = 'ULP INDARUNG',
+  SICINCIN = 'ULP SICINCIN',
+  BALAI_SELASA = 'ULP BALAI SELASA',
+  PAINAN = 'ULP PAINAN',
+  KURANJI = 'ULP KURANJI',
+  MENTAWAI = 'ULP MENTAWAI',
+  // Legacy Bukittinggi values for backwards compatibility
   PADANG = 'ULP Padang',
   PADANG_PANJANG = 'ULP Padang Panjang',
   LUBUK_SIKAPING = 'ULP Lubuk Sikaping',
