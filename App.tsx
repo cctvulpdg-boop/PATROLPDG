@@ -279,11 +279,16 @@ const App: React.FC = () => {
         }
 
         if (data.reports) {
-          console.log(`Ditemukan ${data.reports.length} laporan.`);
-          setReports(data.reports);
-          try {
-            localStorage.setItem('yandal_local_reports', JSON.stringify(data.reports));
-          } catch (e) {}
+          console.log(`Ditemukan ${data.reports.length} laporan dari server.`);
+          setReports(prev => {
+            const serverIds = new Set(data.reports.map((r: any) => r.id));
+            const pending = prev.filter(r => !serverIds.has(r.id) && pendingUpdatesRef.current.has(r.id));
+            const merged = [...pending, ...data.reports];
+            try {
+              localStorage.setItem('yandal_local_reports', JSON.stringify(merged));
+            } catch (e) {}
+            return merged;
+          });
           
           if (data.reports.length > 0) {
             const sorted = [...data.reports].sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());

@@ -128,8 +128,8 @@ export const InputForm: React.FC<InputFormProps> = ({ onSubmit, onCancel, master
       jumlahTiang,
       jumlahKms,
       photos: {
-        sebelum: photosSebelum,
-        sesudah: photosSesudah
+        sebelum: photosSebelum.map(p => (p === null || p === undefined) ? '' : p),
+        sesudah: photosSesudah.map(p => (p === null || p === undefined) ? '' : p)
       }
     };
 

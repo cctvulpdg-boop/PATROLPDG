@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { ULPName, ULPData } from '../types';
-import { getScriptUrl, setScriptUrl } from '../services/api';
-import { Link, Check, RefreshCw, Server, AlertCircle } from 'lucide-react';
+import { getScriptUrl, setScriptUrl, api } from '../services/api';
+import { Link, Check, RefreshCw, Server, AlertCircle, Radio } from 'lucide-react';
 
 interface AdminSettingsProps {
   masterData: Record<string, ULPData>;
@@ -34,6 +34,33 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
 
   const [gasUrlInput, setGasUrlInput] = useState(getScriptUrl());
   const [urlStatusMsg, setUrlStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [isTestingUrl, setIsTestingUrl] = useState(false);
+
+  const handleTestGasUrl = async () => {
+    if (!gasUrlInput.trim().startsWith('https://script.google.com/')) {
+      setUrlStatusMsg({
+        type: 'error',
+        text: 'URL harus diawali dengan https://script.google.com/macros/s/.../exec'
+      });
+      return;
+    }
+    setIsTestingUrl(true);
+    setUrlStatusMsg(null);
+    try {
+      const result = await api.testConnection(gasUrlInput.trim());
+      setUrlStatusMsg({
+        type: result.success ? 'success' : 'error',
+        text: result.message
+      });
+    } catch (err: any) {
+      setUrlStatusMsg({
+        type: 'error',
+        text: err.message || 'Gagal menghubungi server Apps Script.'
+      });
+    } finally {
+      setIsTestingUrl(false);
+    }
+  };
 
   const handleSaveGasUrl = (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,7 +154,20 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               value={gasUrlInput}
               onChange={(e) => setGasUrlInput(e.target.value)}
             />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleTestGasUrl}
+                disabled={isTestingUrl}
+                className="px-4 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-emerald-100 flex items-center gap-1.5 whitespace-nowrap"
+              >
+                {isTestingUrl ? (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Radio className="w-3.5 h-3.5" />
+                )}
+                <span>{isTestingUrl ? 'Menguji...' : 'Tes Koneksi'}</span>
+              </button>
               <button
                 type="submit"
                 className="px-5 py-3 bg-primary hover:bg-cyan-800 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-cyan-100 flex items-center gap-1.5 whitespace-nowrap"

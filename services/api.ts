@@ -6,12 +6,21 @@ import seedData from '../data/seedData.json';
  * URL Google Apps Script Default & Dynamic Configuration
  */
 const DEFAULT_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec'; 
+const LEGACY_SCRIPT_URLS = [
+  'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec'
+];
 
 export const getScriptUrl = (): string => {
   if (typeof window !== 'undefined') {
     const savedUrl = localStorage.getItem('yandal_script_url');
     if (savedUrl && savedUrl.trim().length > 0) {
-      return savedUrl.trim();
+      const trimmed = savedUrl.trim();
+      // If client has the defunct old deployment in localStorage, clear it and use the latest default URL
+      if (LEGACY_SCRIPT_URLS.includes(trimmed)) {
+        localStorage.removeItem('yandal_script_url');
+        return DEFAULT_SCRIPT_URL;
+      }
+      return trimmed;
     }
   }
   return DEFAULT_SCRIPT_URL;
@@ -138,15 +147,34 @@ export const api = {
   },
 
   saveReport: async (report: ReportData, isEdit: boolean = false) => {
-    // 1. Immediately persist locally in localStorage so data is never lost
+    // 1. Sanitize photos: ensure arrays exist and no null/undefined values
+    const cleanSebelum = Array.isArray(report.photos?.sebelum)
+      ? report.photos.sebelum.map(p => (p === null || p === undefined) ? '' : String(p))
+      : Array(6).fill('');
+    while (cleanSebelum.length < 6) cleanSebelum.push('');
+
+    const cleanSesudah = Array.isArray(report.photos?.sesudah)
+      ? report.photos.sesudah.map(p => (p === null || p === undefined) ? '' : String(p))
+      : Array(6).fill('');
+    while (cleanSesudah.length < 6) cleanSesudah.push('');
+
+    const sanitizedReport: ReportData = {
+      ...report,
+      photos: {
+        sebelum: cleanSebelum,
+        sesudah: cleanSesudah
+      }
+    };
+
+    // 2. Immediately persist locally in localStorage so data is never lost
     if (typeof window !== 'undefined') {
       try {
         const cached = localStorage.getItem('yandal_local_reports');
         let currentReports: ReportData[] = cached ? JSON.parse(cached) : (seedData.reports as unknown as ReportData[]);
         if (isEdit) {
-          currentReports = currentReports.map(r => r.id === report.id ? report : r);
+          currentReports = currentReports.map(r => r.id === sanitizedReport.id ? sanitizedReport : r);
         } else {
-          currentReports = [report, ...currentReports.filter(r => r.id !== report.id)];
+          currentReports = [sanitizedReport, ...currentReports.filter(r => r.id !== sanitizedReport.id)];
         }
         localStorage.setItem('yandal_local_reports', JSON.stringify(currentReports));
       } catch (e) {
@@ -154,34 +182,77 @@ export const api = {
       }
     }
 
-    // 2. Try sending to server proxy or Google Apps Script
+    // 3. Try sending to server proxy or Google Apps Script
     const baseUrl = getScriptUrl();
     const action = isEdit ? 'updateReport' : 'saveReport';
-    const payload = JSON.stringify({ action, data: report });
+    const payload = JSON.stringify({ action, data: sanitizedReport });
 
+    // Try Vite proxy first
     try {
-      // Try Vite proxy first
-      await fetch(`/api/gas?scriptUrl=${encodeURIComponent(baseUrl)}`, {
+      const proxyUrl = `/api/gas?action=${action}&scriptUrl=${encodeURIComponent(baseUrl)}`;
+      const proxyRes = await fetch(proxyUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: payload
       });
-      return true;
+      if (proxyRes.ok) {
+        const text = await proxyRes.text();
+        console.log("Server proxy save response:", text);
+        try {
+          const json = JSON.parse(text);
+          if (json.status === 'success' || json.status === 'ok') {
+            return true;
+          }
+        } catch (e) {
+          if (text.includes('success')) return true;
+        }
+      }
     } catch (err) {
-      // Fallback to direct fetch
+      console.warn("Proxy save failed, trying direct fetch to GAS:", err);
     }
 
+    // Fallback: Direct fetch to Google Apps Script
     try {
-      await fetch(`${baseUrl}?action=${action}`, {
+      const directUrl = `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}action=${action}`;
+      await fetch(directUrl, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: payload
       });
+      console.log("Direct fetch to Google Apps Script sent successfully.");
       return true;
     } catch (error) {
-      console.warn("Direct save to Google Apps Script failed, saved locally:", error);
-      return true;
+      console.error("Direct save to Google Apps Script failed:", error);
+      throw error;
+    }
+  },
+
+  testConnection: async (testUrl?: string): Promise<{ success: boolean; message: string }> => {
+    const url = testUrl || getScriptUrl();
+    try {
+      const pingUrl = `/api/data?scriptUrl=${encodeURIComponent(url)}&action=getAll&_=${Date.now()}`;
+      const res = await fetch(pingUrl, { headers: { 'Accept': 'application/json' } });
+      if (res.ok) {
+        const text = await res.text();
+        if (text && !text.trim().startsWith('<') && (text.trim().startsWith('{') || text.trim().startsWith('['))) {
+          const parsed = JSON.parse(text);
+          const count = Array.isArray(parsed.reports) ? parsed.reports.length : 0;
+          return {
+            success: true,
+            message: `Koneksi berhasil! Terhubung ke Spreadsheet (${count} laporan terdata).`
+          };
+        }
+      }
+      return {
+        success: false,
+        message: 'Endpoint merespons tapi format data bukan JSON yang valid.'
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.message || 'Gagal menghubungi server Apps Script.'
+      };
     }
   },
 
