@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ULPName, ULPData } from '../types';
 import { getScriptUrl, setScriptUrl, api } from '../services/api';
 import { SPREADSHEET_ID, PHOTO_FOLDER_ID, BACKUP_FOLDER_ID } from '../constants';
-import { Link, Check, RefreshCw, Server, AlertCircle, Radio, Copy, Code, FileSpreadsheet, ChevronDown, ChevronUp } from 'lucide-react';
+import { Link, Check, RefreshCw, Server, AlertCircle, Radio, Copy, Code, FileSpreadsheet, ChevronDown, ChevronUp, Trash2, AlertTriangle, X } from 'lucide-react';
 
 interface AdminSettingsProps {
   masterData: Record<string, ULPData>;
@@ -893,8 +893,14 @@ function updateMaster(data) {
     }
   };
 
-  const handleDeletePetugas = async (ulp: ULPName, name: string) => {
-    if (!window.confirm(`Hapus petugas "${name}" dari ${ulp}?`)) return;
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    type: 'petugas' | 'penyulang' | 'keypoint';
+    ulp: ULPName;
+    name: string;
+    extra?: string;
+  } | null>(null);
+
+  const executeDeletePetugas = async (ulp: ULPName, name: string) => {
     setIsSavingMaster(true);
     setSyncStatus({ type: 'loading', text: `Menghapus petugas "${name}"...` });
     try {
@@ -915,7 +921,12 @@ function updateMaster(data) {
       setSyncStatus({ type: 'warning', text: `Petugas "${name}" dihapus dari lokal.` });
     } finally {
       setIsSavingMaster(false);
+      setDeleteConfirm(null);
     }
+  };
+
+  const handleDeletePetugas = (ulp: ULPName, name: string) => {
+    setDeleteConfirm({ type: 'petugas', ulp, name });
   };
 
   const handleAddPenyulangSubmit = async (e: React.FormEvent) => {
@@ -946,16 +957,23 @@ function updateMaster(data) {
     }
   };
 
-  const handleDeletePenyulang = async (ulp: ULPName, name: string) => {
-    if (!window.confirm(`Hapus penyulang "${name}" dari ${ulp}?`)) return;
+  const executeDeletePenyulang = async (ulp: ULPName, name: string) => {
     setIsSavingMaster(true);
+    setSyncStatus({ type: 'loading', text: `Menghapus penyulang "${name}"...` });
     try {
       await onDeletePenyulang(ulp, name);
       setSyncStatus({ type: 'success', text: `✓ Penyulang "${name}" berhasil dihapus.` });
       setTimeout(() => setSyncStatus(null), 4000);
+    } catch (err: any) {
+      setSyncStatus({ type: 'warning', text: `Penyulang "${name}" dihapus dari lokal.` });
     } finally {
       setIsSavingMaster(false);
+      setDeleteConfirm(null);
     }
+  };
+
+  const handleDeletePenyulang = (ulp: ULPName, name: string) => {
+    setDeleteConfirm({ type: 'penyulang', ulp, name });
   };
 
   const handleAddKeypointSubmit = async (e: React.FormEvent) => {
@@ -981,23 +999,86 @@ function updateMaster(data) {
     }
   };
 
-  const handleDeleteKeypoint = async (ulp: ULPName, penyulang: string, keypoint: string) => {
-    if (!window.confirm(`Hapus keypoint "${keypoint}"?`)) return;
+  const executeDeleteKeypoint = async (ulp: ULPName, penyulang: string, keypoint: string) => {
     setIsSavingMaster(true);
+    setSyncStatus({ type: 'loading', text: `Menghapus keypoint "${keypoint}"...` });
     try {
       await onDeleteKeypoint(ulp, penyulang, keypoint);
       setSyncStatus({ type: 'success', text: `✓ Keypoint "${keypoint}" berhasil dihapus.` });
       setTimeout(() => setSyncStatus(null), 4000);
+    } catch (err: any) {
+      setSyncStatus({ type: 'warning', text: `Keypoint "${keypoint}" dihapus dari lokal.` });
     } finally {
       setIsSavingMaster(false);
+      setDeleteConfirm(null);
     }
   };
 
-  const currentData = selectedUlp ? masterData[selectedUlp] : null;
+  const handleDeleteKeypoint = (ulp: ULPName, penyulang: string, keypoint: string) => {
+    setDeleteConfirm({ type: 'keypoint', ulp, name: keypoint, extra: penyulang });
+  };
+
+  const currentData = selectedUlp
+    ? (masterData[selectedUlp] || Object.values(masterData).find((d: any) => d?.name === selectedUlp || (d?.name && d.name.toLowerCase() === selectedUlp.toLowerCase())))
+    : null;
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 relative">
       
+      {/* Modal Konfirmasi Hapus Petugas / Penyulang / Keypoint */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-5 animate-scale-up">
+            <div className="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 mx-auto">
+              <AlertTriangle className="w-7 h-7" />
+            </div>
+            
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">
+                Hapus {deleteConfirm.type === 'petugas' ? 'Petugas' : deleteConfirm.type === 'penyulang' ? 'Penyulang' : 'Keypoint'}?
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Apakah Anda yakin ingin menghapus{' '}
+                <strong className="text-slate-800 font-bold uppercase">{deleteConfirm.name}</strong>
+                {deleteConfirm.extra ? ` dari penyulang ${deleteConfirm.extra}` : ''} pada{' '}
+                <strong className="text-slate-800 font-bold">{deleteConfirm.ulp}</strong>?
+              </p>
+              <p className="text-[11px] text-amber-700 bg-amber-50 p-3 rounded-xl border border-amber-200/60">
+                ⚠️ Data akan dihapus dari Master Data sistem dan disinkronkan ke Spreadsheet.
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(null)}
+                disabled={isSavingMaster}
+                className="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all uppercase tracking-wider"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (deleteConfirm.type === 'petugas') {
+                    executeDeletePetugas(deleteConfirm.ulp, deleteConfirm.name);
+                  } else if (deleteConfirm.type === 'penyulang') {
+                    executeDeletePenyulang(deleteConfirm.ulp, deleteConfirm.name);
+                  } else if (deleteConfirm.type === 'keypoint') {
+                    executeDeleteKeypoint(deleteConfirm.ulp, deleteConfirm.extra || '', deleteConfirm.name);
+                  }
+                }}
+                disabled={isSavingMaster}
+                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-lg shadow-rose-200 transition-all uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                {isSavingMaster ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Google Apps Script Endpoint Configuration Card */}
       <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-sm border border-slate-200 space-y-4">
         <div className="flex items-center gap-3">
@@ -1283,17 +1364,16 @@ function updateMaster(data) {
                 <div className="bg-slate-50 rounded-2xl border border-slate-100 max-h-60 overflow-y-auto no-scrollbar">
                   <div className="divide-y divide-slate-200">
                     {currentData.petugas.map((p, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-4 group hover:bg-white transition-all">
+                      <div key={idx} className="flex items-center justify-between p-3.5 group hover:bg-white transition-all">
                         <span className="text-xs font-bold text-slate-700 uppercase">{p}</span>
                         <button 
-                          onClick={() => handleDeletePetugas(selectedUlp, p)} 
+                          type="button"
+                          onClick={() => handleDeletePetugas(selectedUlp as ULPName, p)} 
                           disabled={isSavingMaster}
-                          className="p-2 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                          title="Hapus Petugas"
+                          className="p-2 text-rose-500 hover:text-white hover:bg-rose-600 bg-rose-50 rounded-xl transition-all shadow-sm flex items-center justify-center border border-rose-100"
+                          title={`Hapus Petugas ${p}`}
                         >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     ))}
@@ -1332,12 +1412,13 @@ function updateMaster(data) {
                 <div className="bg-slate-50 rounded-2xl border border-slate-100 max-h-60 overflow-y-auto no-scrollbar">
                   <div className="divide-y divide-slate-200">
                     {currentData.penyulang.map((p, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-4 group hover:bg-white transition-all">
+                      <div key={idx} className="flex items-center justify-between p-3.5 group hover:bg-white transition-all">
                         <span className="text-xs font-bold text-slate-700 uppercase">{p}</span>
-                        <div className="flex gap-1">
+                        <div className="flex items-center gap-1.5">
                           <button 
+                            type="button"
                             onClick={() => setActivePenyulangForKeypoints(p)}
-                            className={`p-2 rounded-lg transition-all ${activePenyulangForKeypoints === p ? 'bg-amber-100 text-amber-600' : 'text-slate-300 hover:text-amber-500 hover:bg-amber-50'}`}
+                            className={`p-2 rounded-xl transition-all ${activePenyulangForKeypoints === p ? 'bg-amber-100 text-amber-700 font-bold' : 'text-slate-400 hover:text-amber-600 hover:bg-amber-50'}`}
                             title="Edit Keypoints"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1345,14 +1426,13 @@ function updateMaster(data) {
                             </svg>
                           </button>
                           <button 
-                            onClick={() => handleDeletePenyulang(selectedUlp, p)} 
+                            type="button"
+                            onClick={() => handleDeletePenyulang(selectedUlp as ULPName, p)} 
                             disabled={isSavingMaster}
-                            className="p-2 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                            title="Hapus Penyulang"
+                            className="p-2 text-rose-500 hover:text-white hover:bg-rose-600 bg-rose-50 rounded-xl transition-all shadow-sm flex items-center justify-center border border-rose-100"
+                            title={`Hapus Penyulang ${p}`}
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </div>
@@ -1406,17 +1486,16 @@ function updateMaster(data) {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                        {(currentData.keypoints?.[activePenyulangForKeypoints] || []).length > 0 ? (
                          (currentData.keypoints?.[activePenyulangForKeypoints] || []).map((kp, idx) => (
-                           <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between group">
+                           <div key={idx} className="bg-white p-3.5 rounded-xl border border-slate-200 flex items-center justify-between group shadow-sm">
                              <span className="text-[11px] font-bold text-slate-700 uppercase">{kp}</span>
                              <button 
-                               onClick={() => handleDeleteKeypoint(selectedUlp, activePenyulangForKeypoints, kp)} 
+                               type="button"
+                               onClick={() => handleDeleteKeypoint(selectedUlp as ULPName, activePenyulangForKeypoints, kp)} 
                                disabled={isSavingMaster}
-                               className="text-red-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all p-1"
-                               title="Hapus Keypoint"
+                               className="p-1.5 text-rose-500 hover:text-white hover:bg-rose-600 bg-rose-50 rounded-lg transition-all border border-rose-100 flex items-center justify-center"
+                               title={`Hapus Keypoint ${kp}`}
                              >
-                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                               </svg>
+                               <Trash2 className="w-3.5 h-3.5" />
                              </button>
                            </div>
                          ))

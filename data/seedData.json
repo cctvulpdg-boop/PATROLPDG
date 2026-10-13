@@ -34686,640 +34686,1331 @@
           null
         ]
       }
+    },
+    {
+      "id": "3805d06b-e3bb-4e67-8151-302f73efa966",
+      "timestamp": "2026-10-13T07:59:01.265Z",
+      "bulan": "Oktober",
+      "noPenugasan": "P01326101300706",
+      "ulp": "ULP INDARUNG",
+      "petugas1": "SYAFRIZAL",
+      "petugas2": "HENDRA CITRA",
+      "penyulang": "F. Kuranji",
+      "keypoint": "SECSION 2 FIDER KURANJI ",
+      "titikStart": "Lbs kampung Melayu ",
+      "titikFinish": "Lbs Wak ketok",
+      "jumlahTiang": "22",
+      "jumlahKms": "1",
+      "photos": {
+        "sebelum": [
+          "https://drive.google.com/file/d/14Ap86ytWwgVJ8q-fveLRLsG-4GnVLhfV/view?usp=drivesdk",
+          "https://drive.google.com/file/d/10z-RwAbZSpQUNDU4F84frM4zGDX71sST/view?usp=drivesdk",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "sesudah": [
+          "https://drive.google.com/file/d/1eJ8hJDLqb_Z-FF_TgEqLgJRjEsZWMMnG/view?usp=drivesdk",
+          "https://drive.google.com/file/d/1E_ABLBg8cJf6eE3K4LAidFWWy_2Z4tJ4/view?usp=drivesdk",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "001f594d-4b3b-45df-83f2-eb25cc8de32c",
+      "timestamp": "2026-10-13T08:11:27.164Z",
+      "bulan": "Oktober",
+      "noPenugasan": "P01326101301028",
+      "ulp": "ULP INDARUNG",
+      "petugas1": "HARSEN LISMARTA",
+      "petugas2": "WANDI LISMARTA",
+      "penyulang": "F. Teluk Sirih",
+      "keypoint": "YANDAL PATROL",
+      "titikStart": "GI bungus",
+      "titikFinish": "LBS Rm keluarga",
+      "jumlahTiang": "20",
+      "jumlahKms": "1.5",
+      "photos": {
+        "sebelum": [
+          "https://drive.google.com/file/d/1IQlWo4-HGJWyvL20quH7PUOTOHvojO1t/view?usp=drivesdk",
+          "https://drive.google.com/file/d/18AnXxLnbcniSnKE9B1jFL7sb41_9D2Jq/view?usp=drivesdk",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "sesudah": [
+          "https://drive.google.com/file/d/12e4rj-Hwb4ZJ7gB7pHiSxElv8YrspbG5/view?usp=drivesdk",
+          "https://drive.google.com/file/d/1lwKoJ-2ZIea0vNzxzesspOIz_kzR41RK/view?usp=drivesdk",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
     }
   ],
   "masterData": {
     "ULP BELANTI": {
       "name": "ULP BELANTI",
       "petugas": [
-        "YANCE",
-        "MUSLIM HAMONANGAN S",
         "NOFRIANTO",
-        "SUPRIYANTO",
-        "ERMAN",
-        "MAISAL PUTRA",
-        "AFRIMA DONAL",
-        "FADLI ALZUHRI YOSE",
-        "FERRY PRIMA",
-        "ARIF SANI PUTRA",
         "NOFENDRI",
-        "BOY PUTRA",
-        "ALJUFRI",
-        "ANWAR",
+        "YANCE",
+        "ERMAN",
+        "FERRY PRIMA",
+        "AFRIMA DONAL",
         "MULYADI BLT",
+        "ALJUFRI",
+        "MAISAL PUTRA",
+        "ARIF SANI PUTRA",
+        "MUSLIM HAMONANGAN S",
+        "SUPRIYANTO",
+        "ANWAR",
+        "BOY PUTRA",
         "RAHMAT HIDAYAT"
       ],
       "penyulang": [
-        "F. Kartini",
-        "F. Raden Saleh",
-        "F. Rasuna Said",
-        "F. Stadion",
-        "F. Veteran",
         "F. Bundo Kanduang",
-        "F. Kampung Nias",
-        "F. Permindo",
-        "F. Ramayana",
-        "F. Simpang Enam",
-        "F. Cadnas",
-        "F. DPR",
-        "F. Khatib Sulaiman",
-        "F. Transmart",
-        "F. Ulak Karang",
-        "F. Alang Laweh",
-        "F. Tanjung Priuk",
-        "F. BRI",
-        "F. Cokroaminotoaminoto",
-        "F. Exp GH Gor Agus Salim 2",
-        "F. Thamrin",
-        "F. Gajah Mada",
-        "F. Exp GH Gor Agus Salim 1",
-        "F. Imam Bonjol 1",
-        "F. Exp GH Imam Bonjol 2",
         "F. Jati",
-        "F. Exp GH Kandis 1",
-        "F. Exp GH Kandis 2",
-        "F. Kandis 3",
-        "F. Exp GH Kandis 4",
-        "F. Marapalam",
-        "F. Matahari",
         "F. Metro",
-        "F. RSUP",
-        "F. Sudirman",
+        "F. Ulak Karang",
+        "F. Kartini",
+        "F. Alang Laweh",
+        "F. Cadnas",
+        "F. Transmart",
+        "F. Gajah Mada",
         "F. Sutan Syahrir",
-        "F. Wahidin"
+        "F. Veteran",
+        "F. Simpang Enam",
+        "F. Rasuna Said",
+        "F. Cokroaminotoaminoto",
+        "F. Raden Saleh",
+        "F. Wahidin",
+        "F. Sudirman"
       ],
       "keypoints": {
-        "F. Kartini": [
-          "LBSM Kantor Gubernur"
-        ],
-        "F. Alang Laweh": [
-          "LBSM Simpang Ranah"
-        ],
         "F. Bundo Kanduang": [
           "LBSM BNI Dobi",
-          "LBSM Bandar Gereja",
-          "LBSM Truntum"
-        ],
-        "F. Cadnas": [
-          "LBSM Hoya Lapai",
-          "LBSM Serba 35",
-          "LBSM Simpang Tinju",
-          "LBSM Masjid Mukhlisin"
-        ],
-        "F. Cokroaminotoaminoto": [
-          "LBSM Koramil"
-        ],
-        "F. DPR": [
-          "LBSM DPR"
-        ],
-        "F. Gajah Mada": [
-          "LBSM Jembatan Tamsis",
-          "LBSM Wisma Jati",
-          "LBSM Gajah Mada",
-          "LBSM Depan Man"
+          "DEPAN MASJID NURUL IMAN "
         ],
         "F. Jati": [
-          "LBSM Perintis Kemerdekaan",
-          "LBSM KPPN Jati Padang",
           "LBSM RS Bhayangkara"
+        ],
+        "F. Metro": [
+          "PS RAYA"
+        ],
+        "F. Ulak Karang": [
+          "GH THAMRIN"
+        ],
+        "F. Kartini": [
+          "GH PONDOK MUNGIL ",
+          "GH GOR "
+        ],
+        "F. Alang Laweh": [
+          "GH THAMRIN",
+          "LBSM RANAH"
+        ],
+        "F. Cadnas": [
+          "LBSM Simpang Tinju",
+          "LBSM Hoya Lapai"
+        ],
+        "F. Transmart": [
+          "GH KANDIS",
+          "DRI GH KANDIS SAMOAI LBS TARUSAN",
+          "PATROL ",
+          "PATROL"
+        ],
+        "F. Gajah Mada": [
+          "LBSM Depan Man"
+        ],
+        "F. Sutan Syahrir": [
+          "F SULTAN SHARIL SEKSEN 2",
+          "PATROL",
+          "RECLOSER AIR CAMAR"
+        ],
+        "F. Veteran": [
+          "LBS OLO LADANG "
+        ],
+        "F. Simpang Enam": [
+          "LBS NIPAH",
+          "LBS NURUL IMAN "
+        ],
+        "F. Rasuna Said": [
+          "GH GOR"
+        ],
+        "F. Cokroaminotoaminoto": [
+          "JLN GANTING"
+        ],
+        "F. Raden Saleh": [
+          "F.RADEN SALEH "
+        ],
+        "F. Wahidin": [
+          "F.WAHIDIN"
+        ],
+        "F. Sudirman": [
+          "GB RRI"
         ]
       }
     },
     "ULP LUBUK ALUNG": {
       "name": "ULP LUBUK ALUNG",
       "petugas": [
-        "RANDA RIHANDI GUSRI",
-        "RAHMADANI",
-        "RIKI CANDRA",
-        "ALVIANTO SCALIA",
-        "AFRIZAL K",
-        "SUSRIANTO",
+        "NORMAN SAPUTRA HS",
         "JONI HENDRA",
+        "RONI HENDRI",
+        "ARDINAL",
         "ARISYA DARMAN",
+        "MAIZARDI",
+        "MULYADI LUBUK ALUNG",
+        "PURDAMUZAL",
         "ARJUN",
         "LEIUNDRY CAHYADI",
-        "NORMAN SAPUTRA HS",
-        "HANAFI",
-        "MARDIAN EFENDI",
-        "RONI HENDRI",
-        "WICO MARCIO",
-        "ARI SATRIA",
-        "ARDINAL",
-        "MAIZARDI",
         "INET SUWARTO",
+        "RANDA RIHANDI GUSRI",
+        "MARDIAN EFENDI",
+        "RIKI CANDRA",
+        "RAHMADANI",
         "USNUL ASRORI",
+        "AFRIZAL K",
+        "ARI SATRIA",
+        "ALVIANTO SCALIA",
+        "HANAFI",
+        "WICO MARCIO",
         "MUHAMMAD RIDHO RAMADHAN",
-        "PURDAMUZAL",
         "MULYADI DUKU",
-        "MULYADI LUBUK ALUNG"
+        "SUSRIANTO"
       ],
       "penyulang": [
         "F. Air Tajun",
+        "F. Otband",
         "F. Ulakan",
-        "F. Pasar Usang",
         "F. Pauh Kambar",
+        "F. Pasar Usang",
+        "F. Bumi Kasai",
         "F. Tapakis",
         "F. Limpato",
-        "F. BIM 3",
-        "F. Bumi Kasai",
-        "F. Charoen",
-        "F. Industri PIP",
-        "F. Japfa PIP",
-        "F. Otband"
+        "F. Industri PIP"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Air Tajun": [
+          "RECLOSER PILUBANG ",
+          "RECLOCER PILUBANG",
+          "FIDER 6 AIR TAJUN",
+          "GI SAMPAI LBS MARANTIAH",
+          "F ULAKAN",
+          "LBS KABUN BARU SAMPAI LBS KATAPING",
+          "LBS KABUN BARU DAMAI LBS KATAPING ",
+          "LBS MARANTIAH SAMPAI FCO PERCAABANGAN KANDANG AYAM NABUMA",
+          "LBS MARANTIAH SAMPAI LBS GOSONG "
+        ],
+        "F. Otband": [
+          "OTBAN",
+          "FCO PERCABANGAN PETAK",
+          "JEMBATAN FALYOPER/BIM",
+          "FCO PETAK"
+        ],
+        "F. Ulakan": [
+          "LBS PINANG",
+          "MENGHINDARI HARUS PIKAP",
+          "RECLOCER BAYUR",
+          "RECLOSER BAYUR",
+          "MENGHINDARI HARUS PIKAP ",
+          "MENGHINDARI GANGGUAN PIKAP ",
+          "RECLOSER BAYUR "
+        ],
+        "F. Pauh Kambar": [
+          "F5 PAUH KAMBAR",
+          "RECLOCER TOBOH BARU",
+          "BAYUR",
+          "PO1326090201045",
+          "PATROL ARUS PIKUP",
+          "GI LUBUK ALUNG SAMPAI RECLOSER TOBOH",
+          "MENGHINDARI HARUS PIKAP ",
+          "RECLOSER TOBOH",
+          "FEEDER 5 PAUH KAMBA ",
+          "FCO JON ROLEX",
+          "ARUS PIKUP",
+          "RECLOS TOBOH ",
+          "LBS TOOBOH",
+          "FCO KASAI ",
+          "TRIP FIDER",
+          "LBS KASAI S/D LBS SIMPANG TUGU",
+          "DARI RECLOSER TOBOH BARU SAMPAI UJUNG ",
+          "FCO JON ROLEK SAMPAI UJUNG",
+          "MEMBEBASKAN HARUS PIKAP ",
+          "ARUS PICUP"
+        ],
+        "F. Pasar Usang": [
+          "RECLOCER BUAYAN",
+          "FIDER 4 PASAR USANG",
+          "F 4 PLBS  SIKABUASAR USANG",
+          "DARI TRAVO UJUNG BANDA CIN0",
+          "STAR BANDA CINO",
+          "FCO PERCABANGAN KANTOR CAMAT",
+          "LBS TANJUNG BASUNG",
+          "FCO SIMPANG GORENG",
+          "BATANG SARIK",
+          "FCO KANTOR CAMAT",
+          "LBS SIKABU",
+          "RECLOSER BUAYAN",
+          "LBE TANJUNG BASUNG",
+          "SIMPANG 4 GEREJA "
+        ],
+        "F. Bumi Kasai": [
+          "RECLOCER BINTUNGAN",
+          "FIDER 2 BUMI KASAI",
+          "F BUMI KASAI",
+          "BUMIKASAI",
+          "RECLOCER BUMI KASAI",
+          "RECLOCER BUAYAN",
+          "RECLOSER BINTUNGAN",
+          "FIDER BUMI KASAI",
+          "RECLOSER BUMI KASAI",
+          "FCO KULIEK"
+        ],
+        "F. Tapakis": [
+          "RECLOCER DEPAN KANTOR",
+          "CO PERCABANGN SIKAYAN ",
+          "F 3 TAPAKIS",
+          "DARI RECLOSER DPN KANTOR SAMPAI UJUNG",
+          "REC.SUNGAI ABANG",
+          "LBS PALAK ATOK",
+          "RECLOSER DEPAN KANTOR",
+          "YANDAL PATROL"
+        ],
+        "F. Limpato": [
+          "GI PARIAMAN ",
+          "PERCABANG FCO PASA TELENGA",
+          "LBS BALAI BASUO S/D TRAVO UJUNG PANGGIA PANGGIA",
+          "LBS BALAI BASUO ",
+          "MENGHINDARI HARUS PIKAP ",
+          "RECLOS TANAH TUMBUH",
+          "FCO TANAH TUMBUH",
+          "ARUS PIUP",
+          "LIMPATO"
+        ],
+        "F. Industri PIP": [
+          "LBS GASINDO"
+        ]
+      }
     },
     "ULP PARIAMAN": {
       "name": "ULP PARIAMAN",
       "petugas": [
-        "ANTONI",
-        "SUHARJHON",
-        "PURI DIAN TAMA",
-        "SUKRAN JAMIL",
-        "DERISMAN",
-        "ANDRIANTO",
-        "ERINALDI",
-        "RULLY EVINDA",
-        "ASDI",
-        "MASRIZAL",
-        "RUDI SUWARMAN",
-        "TIAR RAMON",
-        "HENDRI AL MUTTAGEIN",
         "VERANALDI",
-        "HS",
-        "AFRIZAL",
-        "DEDE SYAFRIADI",
-        "AFRI DONI",
-        "RENDI RINALDI",
-        "SYAFRIL RN",
-        "RAHMAT ROLLI",
+        "BENI SAPUTRA",
+        "PURI DIAN TAMA",
+        "DERISMAN",
         "RIDO YULIANDRI",
-        "MASRIO",
-        "DEVID ARIFIN",
-        "RAHMAT HIDAYAT",
+        "RAHMAT ROLLI",
+        "DEDE SYAFRIADI",
+        "ZAINUL ABIDIN",
+        "MASRIZAL",
+        "TITO AGUSTIAR",
+        "ANTONI",
         "ROBBY SUGARA",
+        "RUDI SUWARMAN",
+        "RENDI RINALDI",
+        "RULLY EVINDA",
+        "SUHARJHON",
+        "RISAT FIRDAUS",
+        "HENDRI AL MUTTAGEIN",
+        "MASRIO",
         "SYAFRIADI",
         "ALMANSYAH",
-        "TITO AGUSTIAR",
+        "DEVID ARIFIN",
+        "RAHMAT HIDAYAT",
+        "SUKRAN JAMIL",
+        "SYAFRIL RN",
+        "ASDI",
+        "AFRIZAL",
+        "ERINALDI",
         "ALHUDA PUTRA",
-        "ZAINUL ABIDIN",
-        "BENI SAPUTRA",
-        "RISAT FIRDAUS"
+        "ANDRIANTO",
+        "AFRI DONI",
+        "TIAR RAMON"
       ],
       "penyulang": [
-        "F. Kota Pariaman",
-        "F. Naras",
-        "F. Sunur",
-        "F. Tabuik",
         "F. Kampung Dalam",
-        "F. Gasan",
-        "F. Sungai Geringging",
-        "F. Sungai Sirah",
+        "F. Sunur",
+        "F. Santok",
         "F. Cimparuah",
-        "F. Exp Pariaman",
-        "F. Exp Sei Limau",
+        "F. Sungai Sirah",
+        "F. Naras",
         "F. Kudu",
-        "F. Santok"
+        "F. Sungai Geringging",
+        "F. Gasan",
+        "F. Exp Sei Limau"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Kampung Dalam": [
+          "FCO PERCABANGAN CIMPAGO ",
+          "LBS SP LOTEK",
+          "FCO PERCABANGAN PULAU AIR ",
+          "RECLOSER CUBADAK AIR",
+          "LBS LOTEK",
+          "PMT",
+          "FCO PULAU AIR ",
+          "REC. CUBADAK AIR",
+          "YANDAL PATEOL",
+          "YANDAL PATROL MALALA SAPULUAH TITIAK"
+        ],
+        "F. Sunur": [
+          "DARI PMT ",
+          "RECLOSER BATANG TAJONGKEK ",
+          "PERCABANAGAN PASA HILALANG",
+          "BATANG TAJONGKEK ",
+          "RECLOSER BATANG TAJONGKEK FIDER KURAI TAJI ",
+          "FIDER KURAI TAJI ",
+          "RE CLOSER BATANG TAJONGKEK  FIDER KURAI TAJI ",
+          "REC BATANG TAJONGKEK "
+        ],
+        "F. Santok": [
+          "LBS BUNGIN",
+          "LBS SIMPANG LAMBANG",
+          "PERCABANGAN BALAI BARANGAN",
+          "  ",
+          "LBS BUNGIN ",
+          "PERCABANGAN BUNGIN",
+          "REC. SIMPANG LAMBANG",
+          "YANDAL MALALA SAPULUAH TITIK",
+          "LBSM LIMAU PURUIK"
+        ],
+        "F. Cimparuah": [
+          "PERCABANGAN KP PANEH",
+          "PERCABANGAN MARABAU ",
+          "LBS TELKOM"
+        ],
+        "F. Sungai Sirah": [
+          "PERCABANGAN KOTO PAUAH",
+          "FCO PERCABANGAN KOTO PAUAH",
+          "RECLOSER SEI SIRAH"
+        ],
+        "F. Naras": [
+          "PERCABANGAN SPP",
+          "BELIBIS",
+          "LBSM SUNGAI SIRAH",
+          "KUD MINA",
+          "LBS SIMPANG BELIBIS ",
+          "LBS BELIBIS",
+          "PERCABANGAN SUPM",
+          "PMT F. NARAS",
+          "FCO BUKIK KERAMBIE ",
+          "FCO KOTO MANDAKEK"
+        ],
+        "F. Kudu": [
+          "LBSM LIMPUR",
+          "LBSM LIMAU PURUIK ",
+          "RECLOSER JATI",
+          "LBSM PADANG ALAI",
+          "LBSM SP SUKUN",
+          "FCO PERCABANGAN ALAHAN TABEAK ",
+          "LBSM LIMAU PURUIK",
+          "LBSM BUNGIN"
+        ],
+        "F. Sungai Geringging": [
+          "FCO MALAI",
+          "FCO KP DADOK",
+          "REC TANJUNG ALAI ",
+          "FCO PERCABANGAN LADANG RIMBO ",
+          "FCO MALAI SAMPAI GARDU UJUNG",
+          "LBS AMAL",
+          "LBSM PASAR SGR",
+          "FEDER LUBUK SAO",
+          "LBSM DUKU PAIK ",
+          "LBSM AUR MALINTANG",
+          "PERCABANGAN KP DADOK",
+          "LBSM AMAL",
+          "LBS LAMPANJANG ",
+          "FCO LANCANG",
+          "FCO PERCABANGAN GUGUAK , FEEDER SGR",
+          "FCO LAMBEH",
+          "LBS PASAR SGR",
+          "REC. TANJUNG ALAI"
+        ],
+        "F. Gasan": [
+          "FCO PERCABANGAN KAMPUNG PISANG ",
+          "REC PAINGAN ",
+          "PERCABANGAN KAMUMUAN",
+          "LBS KABUN",
+          "GH SEI LIMAU",
+          "GH SEI LIMAU "
+        ],
+        "F. Exp Sei Limau": [
+          "F.EXP SEI LIMAU"
+        ]
+      }
     },
     "ULP TABING": {
       "name": "ULP TABING",
       "petugas": [
-        "RUDI WAHYUDI",
-        "RIO WAHYUDI",
-        "ALI AMRAN",
         "FERDIAN",
-        "CESARIO DARMAN",
         "DONI HENDRA",
-        "FAJAR RAMADAN",
+        "ALAN NUGRAHA",
+        "ROBBY",
+        "IRWAN",
         "SUNARDI",
         "EKO SAHPUTRA",
-        "BASRIL",
-        "ROBBY",
-        "YOSEP FEBRIAN",
         "ROBI AFRIANTO EKA PUTRA",
-        "RAHMAD",
-        "IRWAN",
-        "ALAN NUGRAHA"
+        "BASRIL",
+        "YOSEP FEBRIAN",
+        "ALI AMRAN",
+        "RUDI WAHYUDI",
+        "RIO WAHYUDI",
+        "RAHMAD"
       ],
       "penyulang": [
-        "F. Rimbo Bakuang",
-        "F. Sungai Sariak",
-        "F. Tarok City",
-        "F. Sicincin",
-        "F. Puncak Kiambang",
-        "F. Ampalu",
-        "F. Air Tawar",
+        "F. Air Pacah",
+        "F. Pasia Nan Tigo",
+        "F. TVRI",
+        "F. Batas Kota",
         "F. Bandara",
         "F. Adinegoro",
-        "F. Batas Kota",
-        "F. Pondok Pinang",
-        "F. Balai Kota",
-        "F. Mutiara Agam",
-        "F. TVRI",
-        "F. Exp GH TRB",
-        "F. Pasia Nan Tigo",
-        "F. Air Pacah",
-        "F. Exp Lubuk Buaya",
-        "F. Kunango Jantan"
+        "F. Pondok Pinang"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Air Pacah": [
+          "AIR PACAH LBS ATR",
+          "FCO PERCABANGAN 45",
+          "RECLOSER TANJUNG AUR",
+          "REKLOSER TJ AUR ",
+          "LBS BALAI GADANG",
+          "F.AIR PACAH",
+          "RECLOSER SIMPANG HARAPAN",
+          "LBS LORI",
+          "LBS MES MUTIARA AGAM",
+          "PERCABANGAN JLN.LP ANAK AIR",
+          "YANDAL PATROL",
+          "PERCABANGAN FCO JALAN 45 S/D TRAFO UJUNG ",
+          "LBS PARAK BURUK "
+        ],
+        "F. Pasia Nan Tigo": [
+          "RECLOSER MUAROPENJALINAN",
+          "RECLOSER MUARO PANJALINAN",
+          "PREVENTIF ",
+          "REKLOSER MUARO PENYALINAN",
+          "RECLOSER MUARO PENJALINAN SAMPAI UJUNG ",
+          "F PASIA NAN TIGO ",
+          "LBS KALUMPANG"
+        ],
+        "F. TVRI": [
+          "LBS RAJA MINAS",
+          "FEEDER TVRI",
+          "YANDAL PATROL "
+        ],
+        "F. Batas Kota": [
+          "LBS CIMPAGO",
+          "FEEDER BATAS KOTA ",
+          "FCO PERCABANGAN KALAK ANTU",
+          "LBS DENAI PAMULANG",
+          "YANDAL PATROL"
+        ],
+        "F. Bandara": [
+          "PERCABANGAN JL.KESEHATAN"
+        ],
+        "F. Adinegoro": [
+          "LBS BUNDA "
+        ],
+        "F. Pondok Pinang": [
+          "PONDOK PINANG "
+        ]
+      }
     },
     "ULP INDARUNG": {
       "name": "ULP INDARUNG",
       "petugas": [
-        "ABDUR RAHMAN",
-        "RINALDI",
-        "TAMRIN",
-        "ASRUL",
-        "WANDI LISMARTA",
-        "YOPHY PRATAMA",
+        "DEFRINO SEVENDRI",
+        "WENDO FERDIANSYAH",
         "OKTA FERNANTA",
+        "SABARUDDIN",
+        "WANDI LISMARTA",
+        "ABDUR RAHMAN",
+        "HARSEN LISMARTA",
+        "HENDRA CITRA",
         "SYAFRIZAL",
         "EDWAR IKHLAS",
-        "DEFRINO SEVENDRI",
-        "DEAN FAREL",
         "JON LIARDI",
+        "TAMRIN",
+        "YOPHY PRATAMA",
         "SUKARNI DJASMAN",
-        "WENDO FERDIANSYAH",
-        "TONY PUTRA HERMAWAN",
-        "HENDRA CITRA",
-        "RISDI YANTO",
-        "ASRIZAL BASRI",
-        "SYAIFUL HAMZAH",
-        "HARSEN LISMARTA",
-        "SABARUDDIN",
+        "DEAN FAREL",
+        "RINALDI",
         "GUNTUR SAPUTRA",
-        "TAUFAN EKA MAULANA"
+        "ASRUL",
+        "RISDI YANTO"
       ],
       "penyulang": [
-        "F. Cendana",
-        "F. Parak Laweh",
-        "F. Sebrang Padang",
-        "F. Banuaran",
-        "F. Djarum",
-        "F. Kampung Jua",
-        "F. Teluk Luas",
-        "F. CCP",
-        "F. Gambir",
-        "F. Mata Air",
-        "F. PT BA UPO",
-        "F. PTP VI",
-        "F. Wira Innomas",
-        "Inc. F. Tanjung Priuk",
-        "F. Bukit Lampu",
         "F. Teluk Sirih",
         "F. Timbalun",
+        "F. Cendana",
+        "F. Djarum",
         "F. TPI",
-        "F. BLKI",
-        "F. Durian Taruang",
-        "F. Exp GH Teluk Bayur",
-        "F. Exp GH Lubeg 1",
-        "F. Exp GH Lubeg 1I",
+        "F. Banuaran",
         "F. Kuranji",
+        "F. BLKI",
+        "F. Bukit Lampu",
+        "F. Wira Innomas",
+        "F. Exp GH Lubeg 1I",
         "F. Limau Manis",
-        "F. Lubuk Paraku",
-        "F. Piai",
-        "F. Unand",
-        "F. Apical",
-        "F. Exp Kampung Durian"
+        "F. Gambir",
+        "F. Sebrang Padang",
+        "F. Piai"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Teluk Sirih": [
+          "YANDAL PATROL ",
+          "KEYPOINT",
+          "YANDAL PATROL",
+          "PATROL",
+          "P01326100200640"
+        ],
+        "F. Timbalun": [
+          "YANDAL PATROL ",
+          "YANDAL PATROL"
+        ],
+        "F. Cendana": [
+          "FIDER CENDANA "
+        ],
+        "F. Djarum": [
+          "PATROL FDR JARUM SECTION 2"
+        ],
+        "F. TPI": [
+          "YANDAL PATROL ",
+          "YANDAL PATROL"
+        ],
+        "F. Banuaran": [
+          "LBS 17 SAMPAI  LBS BATUNG TABA"
+        ],
+        "F. Kuranji": [
+          "RECLOSER KANTOR LURAH PISANG ",
+          "SECSION 2 FIDER KURANJI "
+        ],
+        "F. BLKI": [
+          "LBS BLKI",
+          "LBS BANDAR BUAT"
+        ],
+        "F. Bukit Lampu": [
+          "YANDAL PATROL",
+          "PICKUP"
+        ],
+        "F. Wira Innomas": [
+          "GH TELUK BAYUR "
+        ],
+        "F. Exp GH Lubeg 1I": [
+          "GI PAUH V"
+        ],
+        "F. Limau Manis": [
+          "LIMAU MANIS",
+          "LBS RSJ"
+        ],
+        "F. Gambir": [
+          "LBS PAMPANG "
+        ],
+        "F. Sebrang Padang": [
+          "LBS SIMPANG 4 AIR MANIS",
+          "F SEBERANG PADANG "
+        ],
+        "F. Piai": [
+          "F PIAI",
+          "PATROL EKSEKUSI",
+          "LBS KP BARU"
+        ]
+      }
     },
     "ULP SICINCIN": {
       "name": "ULP SICINCIN",
       "petugas": [
-        "ZULKARNAINI",
-        "TARMIZAL",
-        "YANDRIS FEBRI",
-        "JUFRI MUSMAN",
-        "ALHIYA NOVAL",
-        "ROBY NURMANSYAH",
-        "DONTOVIA",
-        "SYAHRIAL",
         "IDHAM KHALID",
+        "JUFRI MUSMAN",
         "RIDHO RAHMAT",
-        "JONI INDRA",
+        "AFRIADI",
         "RIDWAN TANJUNG (1979)",
         "TITO ARDIANSYAH",
-        "ASRYAL ZAIGIMAN",
-        "ALI ZAMAL",
+        "JONI INDRA",
         "ADI WARMELTA",
-        "RIDWAN (1980)",
+        "ALHIYA NOVAL",
+        "DONTOVIA",
+        "ZULKARNAINI",
         "MUHAMMAD IDRIS",
-        "ISMAEL",
+        "MUHAMMAD GHUFRAN RISYE",
+        "SYAHRIAL",
+        "YANDRIS FEBRI",
+        "RIDWAN (1980)",
+        "TARMIZAL",
         "ZAKARIA",
-        "AFRIADI",
-        "MUHAMMAD GHUFRAN RISYE"
+        "ISMAEL",
+        "ROBY NURMANSYAH",
+        "ALI ZAMAL",
+        "ASRYAL ZAIGIMAN"
       ],
       "penyulang": [
-        "F. Kayu Tanam",
-        "F. Rimbo Bakuang",
-        "F. Sungai Sariak",
-        "F. Tarok City",
-        "F. Sicincin",
         "F. Puncak Kiambang",
         "F. Ampalu",
-        "F.AIR MANCUR"
+        "F.AIR MANCUR",
+        "F. Tarok City",
+        "F. Kayu Tanam"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Puncak Kiambang": [
+          "FCO RINGAN RINGAN",
+          "PATROL KEHANDALAN SISTEM",
+          "PERCABANGAN  FCO KANDIS PARIKMALINTANG",
+          "LBS LUBUK PANDAN",
+          "F CO PENCABANGAN RINGAN2 ",
+          "LBS KANDANG TAROK ",
+          "LUBUAK PADAN",
+          "PERCBANGAN SUNGAI ASAM DAN GANTIANG",
+          "LBS LUBUAK PANDAN ",
+          "LBS KAMP PANYALAI",
+          "LBS LUBUKBPANDAN ",
+          "KANTOR BUPATI S/D PERCABANGAN POLRES",
+          "PERCABANGAN RINGAN-RINGAN",
+          "PERCABANGAN TANJUNG PISANG",
+          "FCO PENCABANGAN POLRES",
+          "LBS RINGAN2 SAMPAI GI",
+          "LBS LUBUK PANDAN S/D PERCB ",
+          "LBS RINGAM2",
+          "LBS KAYU BODOH"
+        ],
+        "F. Ampalu": [
+          "RECLOSER PUNGGUNG LADING ",
+          "PERCABANGAN PADANG BUNGO",
+          "PERC PELITA",
+          "PERCABANGAN DURIAN AMBALAU",
+          "YANDAL PATROL PERCABANGAN LIMAU HANTU",
+          "FCO TUNGKA DATA",
+          "YANDAL PATROL",
+          "PERCABANGAN PADANG BUNGO ",
+          "PERCABANGAN CIMPAGO ",
+          "YANDAL PATROL RINGAN2BISATI",
+          "YANDAL PATROL DARI PG LADING SAMPAI PDG AMPALU",
+          "RECLOSER KOTO MAMBANNG",
+          "LBS POLSEK",
+          "LBS PADANG AMPALU",
+          "PERC PELITA ",
+          "FCO KABUN PONDOK DUO",
+          "LBS LAMBAU",
+          "RECLOSER PUNGGUYANDAL PATROL ",
+          "JARUS PADANG AMPALU SAMPAI PADANG SAGO",
+          "LBS TANDIKEK ",
+          "JARUS BUKIT SELASIH SAMPAI SEI IBUR",
+          "LBS KOTO MAMBANG SAMPAI LBS KABUN PONDOK DUO",
+          "LBS KOTO MAMBANG ",
+          "LBS KABUN  S/D LBS LAMBAU",
+          "DARI LBS BUKIT APIT S/D LBS BUKIT SELASIH",
+          "RECLOSER RAMBAI BARU",
+          "JARUS LBS SIMP JAGUNG SMPAI PUNGGUNG LADING",
+          "PERC PADANG LIMAU",
+          "LBS TANDIKEK",
+          "PERCABANGAN STM SAMPAI UJUNG ",
+          "PERCABANGAN AMBALAU",
+          "LBS MUDIAK BALAI",
+          "PATROL JARUS SIMP.PELITA SAMPAI KAMPUNG.PANEH",
+          "PERC SIMP PELITA SAMPAI UJUNG",
+          "LBS KABUN PONDOK 2",
+          "PERC PADANG BUNGO",
+          "FCO SEI KASIKAN",
+          "PATROL PERCABANGANN SIMPANG HARU ",
+          "JALUR LURUS AMAPALU DARI RECLOSER PUNGGUNG LADING ",
+          "RAMBAI BARU SIMP.JAGUNG DAN KALUAT",
+          "YANDAL PATROL RNGAN2BISATI DAN SEI KARUH",
+          "PERCBANGAN MANGOR",
+          "PERCABANGAN SIALANGAN",
+          "PERC LAPAU CUBADAK DAN KOTOBARU",
+          "PERC ",
+          "YANDAL PATROL LBS BUKIT SELASIH UJUNG LBS KAPOLSEK",
+          "YANDAL PATROL PERCABANGAN LAPAU CUBADAK DAN SIJANGEK",
+          "LBS LAMBAU ",
+          "FCOPERCABANGAN SUNGAI KASIKAN",
+          "PERCABANGAN PUNCUANG ANAM"
+        ],
+        "F.AIR MANCUR": [
+          "LBS PASAR GELOMBANG",
+          "PERCABANGAN BATANG PARAMAN ",
+          "FCO BALAH AIA",
+          "LBS PSR GELOMBANG",
+          "FCO KAMPUNG BARU",
+          "FCO BATANG PARAMAN",
+          "LBS PS GELOMBANG ",
+          "PERCABANGAN SAKAYAN JAUH ",
+          "FCO PADANG LAPAI",
+          "LBS ANAI",
+          "PERCABANGAN BANDA MANGGIH ",
+          "FCO BATANG PARAMAN ",
+          "FCO ANDURING ",
+          "LBS PASAR GELOMBANG ",
+          "LBS INS",
+          "FCO ANDURING",
+          "PERCABANGAN BALAH AIR SD PERCABANGAN SIKAYAN JAUH"
+        ],
+        "F. Tarok City": [
+          "LBS INS/BINALANG ",
+          "PERCABANGAN PDG MANTUNG ",
+          "PERCABANGAN PDG LAPAI ",
+          "PERCABANGAN LADANG LAWEH",
+          "LBS INS",
+          "LBS KEPALA HILALANG",
+          "FCO PERCBANGAN LADANG LAWEH "
+        ],
+        "F. Kayu Tanam": [
+          "REKLOSER PINCURAN 7",
+          "FCO PANDAWA",
+          "CO PERCBANGAN  JANJANG AKA",
+          "LBS PASAR GELOMBANG"
+        ]
+      }
     },
     "ULP BALAI SELASA": {
       "name": "ULP BALAI SELASA",
       "petugas": [
         "RISWANTO",
-        "ZON EFENDI",
+        "FITRIZAL",
         "JON KANEDI",
-        "NIKO ERLINDO",
         "ZAIBUL IS",
+        "DZULFIKRIL IHSAN S",
+        "SURYADI BLS",
+        "HERMANSYAH",
+        "DENDY ELMI SYAHPUTRA",
+        "GUSNADI",
+        "ISMARDI",
+        "AFRIZUL",
+        "SYAFRIZAL R",
+        "MULLIADI B",
+        "KHISAN PADLIYAN",
+        "JUNAIDI",
+        "DEDI INDRAWADI",
+        "WIWIT MUAFIT",
+        "DESOVIANTO",
+        "ULLIADI",
+        "JUFRIZAL",
+        "SEPRIANTO",
+        "ARMAN KR",
+        "ZON EFENDI",
+        "ANDRI SUSTRA PUTRA UTAMA",
+        "NIKO ERLINDO",
+        "HASAN BASRI",
+        "MARTALIUS",
         "MULYADI",
         "AZIZMAN NASIR",
-        "DZULFIKRIL IHSAN S",
-        "GUSNADI",
-        "HERMANSYAH",
-        "AFRIZUL",
-        "SAEPUL",
         "YOGI MAI AGUNG KUSUMA P",
-        "FITRIZAL",
-        "ANDRI SUSTRA PUTRA UTAMA",
-        "MULLIADI B",
-        "ULLIADI",
-        "KHISAN PADLIYAN",
-        "SEPRIANTO",
-        "HASAN BASRI",
-        "DESOVIANTO",
-        "JUNAIDI",
-        "WIWIT MUAFIT",
-        "ARMAN KR",
-        "SARMANTO",
-        "MARTALIUS",
-        "DEDI INDRAWADI",
-        "JUFRIZAL",
-        "DENDY ELMI SYAHPUTRA",
-        "ISMARDI",
-        "SURYADI BLS",
-        "SYAFRIZAL R"
+        "SARMANTO"
       ],
       "penyulang": [
-        "F. Sungai Tunu",
-        "F. Pelangai Gadang",
-        "F. Ranah Pesisir",
-        "F. Exp. Linggo",
-        "F. Exp Tapan",
-        "F. Muara Sakai",
-        "F. Pasar",
         "F. Kuyung",
-        "F. KTM",
-        "F. Lunang",
-        "F. Silaut",
-        "F. Exp Lunang",
+        "F. Ranah Pesisir",
+        "F. Pasar",
         "F. Kumbuang",
-        "F. Tapan",
-        "F. Balai Selasa",
-        "F. Exp Indrapura",
+        "F. Pelangai Gadang",
         "F. Kayu Bawang",
         "F. Lakitan",
-        "F. Exp. Sei Teguh",
-        "F. Malepang",
-        "F. Nilau"
+        "F. Tapan",
+        "F. Sungai Tunu",
+        "F. Exp. Linggo",
+        "F. Muara Sakai",
+        "F. KTM",
+        "F. Exp Lunang",
+        "F. Exp Indrapura",
+        "F. Exp. Sei Teguh"
       ],
       "keypoints": {
-        "F. Balai Selasa": [
-          "LBSM SMP 3 Lengayang"
+        "F. Kuyung": [
+          "YANDAL PATROL",
+          "GH IDP",
+          "BUANG AKAR RAMBAT",
+          "LBS SEI TEGUH",
+          "10",
+          "LBS TU"
         ],
-        "F. Exp Indrapura": [
-          "LBSM Pasar Miskin",
-          "REC Sumedang",
-          "LBSM Lesung Air",
-          "REC Pasar Balai Selasa",
-          "LBSM Jembatan Air Haji"
-        ],
-        "F. Kayu Bawang": [
-          "REC Kayu Bawang",
-          "LBSM Medan Baik",
-          "LBSM Balai Kamis",
-          "LBSM Kampung Pinang",
-          "LBSM Balai Jawi",
-          "LBSM Gurun Panjang",
-          "LBSM Pasar Lakitan"
-        ],
-        "F. KTM": [
-          "REC Sei Lasi",
-          "LBSM 3 Ways Tanjung Baringin",
-          "LBSM Silaut Luar",
-          "LBSM Silaut 2"
-        ],
-        "F. Lakitan": [
-          "LBSM Bank Nagari Kambang",
-          "LBSM Solok Padi Padi",
-          "LBSM Padang Marapalam",
-          "REC Padang Laban"
-        ],
-        "F. Exp Lunang": [
-          "REC Lunang 2",
-          "LBSM Medan Jaya"
-        ],
-        "F. Muara Sakai": [
-          "REC Lopon",
-          "LBSM Embacang Limus"
+        "F. Ranah Pesisir": [
+          "PEMANGKASAN POHON DEKAT JTM FIDER RANAH ",
+          "FIDER RANAH ",
+          "CO PANGAKAL SUNGAI LIKU",
+          "F RANAH PERCABANGAN SUMEDANG ",
+          "FCO SUMEDANG",
+          "ULP BALAI SELASA",
+          "FCO PERCABANGAN SUMEDANG ",
+          "ULP BALAI SELASA ",
+          "PERC FCO SUMEDANG",
+          "PEMANGKASAN POHON DEKAT JTM FIDER RANAH PERCABANGAN SUMEDANG ",
+          "ULP ULP BALAI SELASA "
         ],
         "F. Pasar": [
           "REC Lubuk Ubay",
-          "LBSM Kapalo Banda",
-          "LBSM Air Batu"
-        ],
-        "F. Sungai Tunu": [
-          "REC Sungai Tunu",
-          "LBSM Batas Air Haji",
-          "LBSM KP Air Haji",
-          "LBSM Pasar Bukit Air Haji",
-          "LBSM Hilalang Panjang"
-        ],
-        "F. Exp Tapan": [
-          "LBSM Batang Betung",
-          "LBSM Sei Rumbai"
+          "CO TR",
+          "LBSM Air Batu",
+          "LBSM AIR BATU"
         ],
         "F. Kumbuang": [
           "REC Pasar Belakang",
-          "LBSM Alang Rambah",
-          "LBSM Simpang SMP Lunang"
+          "LBSM Alang Rambah"
         ],
-        "F. Malepang": [
-          "REC Kelok Awas",
-          "LBSM Sei Kuyung",
-          "LBSM Sei Teguh"
+        "F. Pelangai Gadang": [
+          "CO PELANGAI GADANG",
+          "PANGKAS KAYU.BUKA TUTUP PINTU GARDU"
         ],
-        "F. Nilau": [
-          "LBSM Talang Pusara"
+        "F. Kayu Bawang": [
+          "LBSM Kampung Pinang",
+          "REC Kayu Bawang",
+          "LBSM Balai Kamis",
+          "LBSM Medan Baik",
+          "REC KAYU BAWANG",
+          "LBSM Balai Jawi",
+          "LBSM Gurun Panjang"
+        ],
+        "F. Lakitan": [
+          "LBSM Solok Padi Padi",
+          "LBSM Padang Marapalam"
         ],
         "F. Tapan": [
-          "REC Talang",
-          "LBSM Bukit Putus"
+          "CO SAKO",
+          "REC Talang"
+        ],
+        "F. Sungai Tunu": [
+          "REC Sungai Tunu",
+          "FSUNGAI TUNU",
+          "FIDER SUNGAI TUNU ",
+          "GH SAMPAI REC.SUNGAI TUNU",
+          "REC SUNGAI TUNU",
+          "PERC FCO LAGAN"
+        ],
+        "F. Exp. Linggo": [
+          "PASAR BUKIT AIR HAJI",
+          "LBS PASAR BUKIT",
+          "LBS PASAR PASAR BUKIT"
+        ],
+        "F. Muara Sakai": [
+          "REC LOPON",
+          "REC Lopon",
+          "LBSM EMBACANG LIMUS",
+          "F MUARA SAKAI "
+        ],
+        "F. KTM": [
+          "LBSM Silaut Luar",
+          "REC Sei Lasi",
+          "LBSM Silaut 2",
+          "PERCABANGAN TSM"
+        ],
+        "F. Exp Lunang": [
+          "LBS MESJID TAPAN "
+        ],
+        "F. Exp Indrapura": [
+          "PERCBANGAN HILANG PANJANG "
+        ],
+        "F. Exp. Sei Teguh": [
+          "F EX. SEI TEGUH"
         ]
       }
     },
     "ULP PAINAN": {
       "name": "ULP PAINAN",
       "petugas": [
-        "ASEP PUTRA",
         "MUKHLIS",
-        "ROSMAN SAPUTRA  ZEGA",
-        "RAHMA SAPUTRA",
-        "NAULI",
-        "RISDIANTO",
-        "RONATRI OKTAFRI",
-        "USMAN",
-        "RUSWANDI",
-        "JASRI WANDI",
-        "ALGUSMAN",
-        "DOLI HARTONO",
-        "DORI SAPUTRA",
-        "RICHO HANDAYANI S",
         "AGUNG PRADITA PUTRA",
-        "ANDRI JUNALDI",
+        "BENI MAISYAPUTRA",
+        "JASRI WANDI",
+        "ASEP PUTRA",
+        "ROSMAN SAPUTRA  ZEGA",
+        "NAULI",
+        "GINO PARAMULYA",
         "ALKADRI",
-        "NOSVIL HADI",
-        "JHON HENDRI",
+        "RUSWANDI",
         "RAPI PRADANA",
+        "RISDIANTO",
         "WAWAN NOFRIANTO",
         "AFDANI",
-        "BENI MAISYAPUTRA",
-        "GINO PARAMULYA"
+        "DOLI HARTONO",
+        "NOSVIL HADI",
+        "DORI SAPUTRA",
+        "ANDRI JUNALDI",
+        "RICHO HANDAYANI S",
+        "RAHMA SAPUTRA",
+        "USMAN",
+        "ALGUSMAN",
+        "RONATRI OKTAFRI",
+        "JHON HENDRI"
       ],
       "penyulang": [
-        "F. Batang Kapas",
-        "F. Dempo",
-        "F. Kota (Painan)",
-        "F. Rawang",
-        "F. Utara",
-        "F. B3",
         "F. Painan",
-        "F. Exp GH Painan",
+        "F. Utara",
+        "F. Rawang",
         "F. Surantih",
-        "F. Taratak"
+        "F. Taratak",
+        "F. Kota (Painan)",
+        "F. Batang Kapas",
+        "F. B3",
+        "F. Exp GH Painan"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Painan": [
+          "F.PAINAN",
+          "PENYEBAB GANGGUAN FIDER",
+          "PEYULANG TRIP FIDER",
+          "DARI LBS PASAR BARU SAMPAI LBS ASAM KUMBANG ",
+          "F PAINAN PENYULANG GANGGUAN",
+          "PENYULANG F PAINAN, ",
+          "PERCABANGAN KAPUJAN",
+          "RECLOSER LUMPO SMPAI UJUNG",
+          "DARI FCO TALAOK SAMPAI UJUNG ",
+          "LBS.RCTI SD JALAMU",
+          "DARI LBS ASAM KUMBANG SAMPAI FCO MUARO AIA ",
+          "PENYUKANG TRIP FIDER",
+          "PENYULANG FODER GANGGUAN",
+          "DARI RECLOSER LUMPO SAMPAI UJUNG",
+          "LBS SALIDO",
+          "FIDER PAINAN PENYULANG GANGGUAN",
+          "LBS SEI GAYO SMPAI UJUNG",
+          "PENYULANG GANGGUAN",
+          "LBS SUNGAI GAYO",
+          "DARI LBS ASAM KUMBANG FCO MUARO AIA ",
+          "DARI LBS PASAR BARU SAMPAI LBS POLSEK TARUSAN",
+          "RECLOSER KAPENCONG SMPAI LBS ASAMKUMBANG",
+          "LBS BAYANG",
+          "DARI PERCABNGAN TALAOK DAN KAPUJAN ",
+          "LBS BKM",
+          "DARI LBS ASAM KUMBANG SMPAI UJUNG ",
+          "PEMELIHARAAN JARINGAN",
+          "LB BAYANG SMPAI LBS ASAMKUMBANG",
+          "LBS ASAMKUMBANG SMPAI KOTO RANAH",
+          "DARI RECLOSER KAPENCONG SMPAI UJUNG ",
+          "DARI LBS PASAR BARU SAMPAI LBS SAWAH LIAT "
+        ],
+        "F. Utara": [
+          "LBS BUNGO PASANG",
+          "PEMELIHARAAN ROW",
+          "F.UTARA",
+          "PERCABANGAN POLSEK",
+          "PERCABANGAN BUNGA PASANG",
+          "LBS TUGU RABAB",
+          "TUGU RABAB",
+          "LBS SALIDO",
+          "LBS B PASANG",
+          "PANGKAS POHON",
+          "PEMRLIHARAAN ROW",
+          "F UTARA",
+          "LBS POLSEK SALIDO "
+        ],
+        "F. Rawang": [
+          "F.RAWANG GH,S.D UJUNG"
+        ],
+        "F. Surantih": [
+          "YANDAL PATROL",
+          "LBS SURANTIH ",
+          "F SURANTIH",
+          "LBS MUDIK SURANTIH, PERC GUNUANG MALELO DAN PASIR NAN PANJANG",
+          "PADANG TAE",
+          "AMPING PARAK",
+          "PERCABANGAN AMPING PARAK",
+          "PIKET KEHANDALAN",
+          "DARI FCO SIKABU SAMPAI TRANS TJG GDG",
+          "PERCABANGAN TRANS TANJUNG GADANG",
+          "PERCABANGAN GUNUNG PAUH DAN PABRIK ES",
+          "MUDIEK SURANTIH",
+          "PERC.GNG MALELO",
+          "PERC MUDIK SURANTIH DARI FCO GANTING SAMPAI UJUNG LANGGAI ",
+          "REKLOSER ALAI SAMPAI LBS BUAYA PUTIH ",
+          "DR REKLOSER ALAY SAMPAI LBS BUAYA PUTIH "
+        ],
+        "F. Taratak": [
+          "F.TARATAK",
+          "10",
+          "PERCABANGAN MUDIK BTG KAPAS",
+          "DARI BUNGO LADO SAMPAI LBS KANTOR CAMAT ",
+          "F TARATAK DAN SURANTIH",
+          "D.TARATAK",
+          "EXPRES FEDER",
+          "PERC MUDIK BTG KAPAS "
+        ],
+        "F. Kota (Painan)": [
+          "F KOTA"
+        ],
+        "F. Batang Kapas": [
+          "LBS RCTI ",
+          "PEMELIHARAAN ROW",
+          "LBS RCTI",
+          "F BT KAPAS",
+          "LBS BUKIT PULAI",
+          "LBS BT KAPAS"
+        ],
+        "F. B3": [
+          "PERC SEI TAWA",
+          "LBS API API SAMPAI LBS TARUSAN ",
+          "PERC PONDOK DAN SMK",
+          "PEMILIHARAAN JTM"
+        ],
+        "F. Exp GH Painan": [
+          "DARI LBS SMP7 SAMPAI LBS SPBU BTG KAPAS"
+        ]
+      }
     },
     "ULP KURANJI": {
       "name": "ULP KURANJI",
       "petugas": [
-        "FAJRI KASWIRA OSMAN",
-        "HARI ZONA",
-        "AFRIZONI",
+        "FEBRI RAHMAD",
         "ALMARIDI YUSUF",
-        "YOGA PUTRA SAGITA",
-        "ALIYUS",
+        "EKA PUTRA",
+        "ELFIAN",
+        "HENDRA A",
         "ARIF TRI PUTRA",
+        "YOGA PUTRA SAGITA",
+        "RIZKI IBRAHIM",
+        "FAJRI KASWIRA OSMAN",
+        "AFRIZONI",
+        "ZULKARNAINI",
+        "YODI SEPTIAN PUTRA",
+        "HARI ZONA",
         "ADE CHANDRA",
         "RISMAN",
-        "FEBRI RAHMAD",
-        "ELFIAN",
-        "RIZKI IBRAHIM",
-        "EKA PUTRA",
-        "YODI SEPTIAN PUTRA",
-        "HENDRA A",
-        "ZULKARNAINI"
+        "ALIYUS"
       ],
       "penyulang": [
-        "F. Siteba",
-        "F. RSUD",
         "F. Sungai Sapih",
-        "F. Korong Gadang",
+        "F. RSUD",
         "F. Belimbing",
+        "F. Polamas",
         "F. Exp GH Kandis 1 / F. Kalumbuk",
-        "F. Exp GH Kandis 2 / F. Exp Gurun Laweh",
         "F. Koto Tingga",
         "F. Andalas",
-        "F. M Hatta",
-        "F. Polamas"
+        "F. Siteba",
+        "F. Korong Gadang",
+        "F. M Hatta"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F. Sungai Sapih": [
+          "P01326082400722",
+          "GH TRB",
+          "FEDER SUNGAI SAPIH",
+          "PATROLI FEEDER ",
+          "GHTRB SAMPAI LBS VILAKU",
+          "LBS DURIAN RATUS",
+          "LBS BALAI BARU",
+          "SUNGAI SAPIAH ",
+          "FIDER SUNGAI SAPUAH",
+          "SUNGAI SAPIH",
+          "LBS KURAO",
+          "P01326100300977"
+        ],
+        "F. RSUD": [
+          "P01326082600918",
+          "LBS LOLO KASIK ",
+          "F.RSUD",
+          "LBS LOLO KASIK - LBS SIMPANG 3 GUNUNG SARIK",
+          "GH TRB ",
+          "RSUD ",
+          "LSS LOLO KASIK SAMPAI LBS MINI",
+          "FEDER RSUD ",
+          "RSUD"
+        ],
+        "F. Belimbing": [
+          "REC PS LALANG",
+          "PATROL ",
+          "LBS MUJAHIDIN",
+          "F.BELIMBING",
+          "LBS DELIMARAYA",
+          "REC MUJAHIDIN SAMPAI LBS KORANG GADANG",
+          "REC.MUJAHIDIN"
+        ],
+        "F. Polamas": [
+          "FEDEER POLA MAS",
+          "BANJIR KANAL",
+          "YANDAL PATROLI FEEDER ",
+          "POLAMAS",
+          "GIS SAMAPI LBS PARAK JIGARANG"
+        ],
+        "F. Exp GH Kandis 1 / F. Kalumbuk": [
+          "OK BS TARATAK PANEH - PERC MAWAR PUTIAH - LBS KORONG GADANG",
+          "LBS UJE BP",
+          "LBS TERATAK PANEH",
+          "FEDER KALUMBUK",
+          "FEEDER KALUMBUK",
+          "LBS CIMERLANG",
+          "LBS MAWAR PUTIAH ",
+          "LBS CEMERLANG"
+        ],
+        "F. Koto Tingga": [
+          "LBS SAWAH LAING SAMPAI LBSLAPAU BUANJUNG",
+          "LBS LOLOKARAN",
+          "YANDAL PATROL ",
+          "GI PAUH LIMO",
+          "YANDAL PATROLI FEEDER KONDISI AMAN ",
+          "KOTO TINGGA",
+          "LBS UJE BP",
+          "FEEDER KOTO TINGGA",
+          "LBS LAPAU BUANJUANG",
+          "LBS KETAPING",
+          "PATROLI FEEDER ",
+          "LBS KOTO TINGGA ",
+          "KOTO TINGGA "
+        ],
+        "F. Andalas": [
+          "LBS KUBU DALAM ",
+          "FEDER ANDALAS ",
+          "YANDAL PATROLI FEEDER "
+        ],
+        "F. Siteba": [
+          "FEDER SITEBA",
+          "PATROLI FEEDER SITEBA ",
+          "LBS JEMBATAN SITEBA LBS DEPAN KOMPI",
+          "DURIAN RATUIH",
+          "LBS JEMBATAN SITEBA"
+        ],
+        "F. Korong Gadang": [
+          "LBS SIMPANG KURANJI"
+        ],
+        "F. M Hatta": [
+          "M HATTA"
+        ]
+      }
     },
     "ULP MENTAWAI": {
       "name": "ULP MENTAWAI",
       "petugas": [
-        "JAKA ENDIKA TAIKATUBUT OINAN",
-        "SAPARUDDIN",
         "AGUSTIKAMIL",
-        "SYAIFUL ANWAR",
-        "SURYADI",
-        "NENDA",
-        "RAHMI ALFADANI",
-        "WANDI PITOYO",
-        "IKHWANUL FADHLI",
-        "KLERISTO ARISMAN TAPOKAPKAP",
-        "RICO SUGANDA SAPUTRA",
-        "FINGKI HAMDANI",
-        "PARLATIN SAOGO",
-        "EMANUEL SARORO",
-        "SEPTIAN EKA PUTRA",
-        "JHONNI AGUS SABABALAT",
-        "TAK JOJOAN",
-        "PERDAMAIAN SAKELETUK",
-        "MUHAMMAD IQBAL",
-        "THEOFILUS SAUDDEINU",
-        "LAINGEKEREI SABAGGALET",
-        "SAWAL GEA",
-        "MANSARDIN",
-        "DEDI SAPUTRA SABELAU",
-        "REKI HARLESVAN TASIRILELEU",
-        "AGUSTINUS JEFRI SABUKKU",
-        "MARTIN",
-        "SADARMAN LASE",
-        "SAPUTRA RAMADAN",
-        "ZUL HENDRI",
-        "RUDI",
-        "ROBI SEPUNGAN",
-        "RONAL IRWAN ZEBUA",
-        "YULSRI INDRA OKDA ARLANGGA",
-        "SAMUEL",
-        "ADI SAPUTRA",
-        "RYAN WINALDO PUTRA",
-        "SAFRIZAL",
-        "MARCELINUS DEDI SAK",
-        "ZULKARNAIN",
-        "ARIF ALFIANDO PUTRA",
-        "MAIRA BENI",
-        "RINO ANWAR",
-        "AQSHAL FEDERICO KAREL",
-        "DONI EKA PUTRA",
-        "ARIS MUNANDAR",
-        "A ZAMRIS",
-        "B MUNDUKEN SIRIRUI",
-        "JEPRI AZRIANTO",
-        "MARINAL",
-        "KHAIDIR M QHADAFI",
-        "HENDRA SAPUTRA. S",
-        "MUHAMMAD SUTAJA RESNA PUTRA",
+        "SAPARUDDIN",
+        "DENI JEFRI",
         "INDRA",
+        "SURYADI",
+        "WANDI PITOYO",
+        "AFDAL SAIFUL",
+        "RAHMI ALFADANI",
+        "JAKA ENDIKA TAIKATUBUT OINAN",
+        "NENDA",
+        "IRVAND YUDIE CAESARIO",
         "FAHMI RAMADHAN",
         "RAHMAT SYAH PUTRA",
-        "AFDAL SAIFUL",
-        "DENI JEFRI",
-        "IRVAND YUDIE CAESARIO",
         "HENDRA SAPUTRA",
-        "JON ALWIS",
-        "NARLIUS REINAL ERIANTO"
+        "RINO ANWAR",
+        "SYAIFUL ANWAR",
+        "JHONNI AGUS SABABALAT",
+        "FINGKI HAMDANI",
+        "MANSARDIN",
+        "RICO SUGANDA SAPUTRA",
+        "PARLATIN SAOGO",
+        "HENDRA SAPUTRA. S",
+        "DEDI SAPUTRA SABELAU",
+        "SEPTIAN EKA PUTRA",
+        "REKI HARLESVAN TASIRILELEU",
+        "LAINGEKEREI SABAGGALET",
+        "ZUL HENDRI",
+        "RUDI",
+        "SAFRIZAL",
+        "RYAN WINALDO PUTRA",
+        "JEPRI AZRIANTO",
+        "ZULKARNAIN",
+        "AGUSTINUS JEFRI SABUKKU",
+        "SAMUEL",
+        "ROBI SEPUNGAN"
       ],
       "penyulang": [
-        "F Goisooinan",
-        "F Maileppet",
         "F Sioban",
         "F Tua Pejat",
-        "F. Bataet",
-        "F. Madobag",
-        "F. Matotonan",
+        "F Goisooinan",
         "F. Muara Taikako",
-        "F. Pastoran",
-        "F. Pei Pei",
-        "F. Pokai",
-        "F. Saibi",
-        "F. Saliguma",
+        "F. Seay Baru",
         "F. Saumanganya",
-        "F. Seay Baru"
+        "F Maileppet",
+        "F. Pokai",
+        "F. Saibi"
       ],
-      "keypoints": {}
+      "keypoints": {
+        "F Sioban": [
+          "KM.4",
+          "YANDAL PATROL ",
+          "YANDAL PATOROL KP SIOBAN",
+          "FEEDER SIOBAN, KM 4 - LBS ROKOT",
+          "PEMELIHARAAN ROW",
+          "YANDAL PATROL",
+          "F. SIOBAN",
+          "KM 4 - ROKOT",
+          "KP SIOBAN",
+          "KM 4 - LBS ROKOT ",
+          "KP.SIOBAN",
+          "SUDAH DIEKSEKUSI ",
+          "YANDALPATROL",
+          "LBS ROKOT - MATOBEK ",
+          "KP. SIOBAN",
+          "PATROL KEHANDALAN ",
+          "FCO SAOW SAMPAI UJUNG",
+          "KO SIOBAN",
+          "PATROL KP SIOBAN",
+          "F.SIOBAN - FCO BUPATI ",
+          "1",
+          "F.SIOBAN",
+          "PATROL LBS SAGICIK KATIET",
+          "YANDAL PATROL KP SIOBAN"
+        ],
+        "F Tua Pejat": [
+          "FEEDER TUAPEJAT ",
+          "KM 4 - KM 0",
+          "KM 0 - KM 4"
+        ],
+        "F Goisooinan": [
+          "F.GOSOIANAN",
+          "YANDAL PATROL",
+          "YANDAL PATROL ",
+          "SP 3 & SP 2"
+        ],
+        "F. Muara Taikako": [
+          "PATROL",
+          " YANDAL",
+          "PATROL KEHANDALAN"
+        ],
+        "F. Seay Baru": [
+          "YANDAL PATROL PAGKAS TEBANG",
+          "KP SEAY BARU",
+          "GANTI ARESTER GD 137 BUKKU MONGA",
+          "PANGKAS TEBANG",
+          "TEBANG PANGKAS ",
+          "PANGKAS TEBANG ",
+          "YANDAL PATROL ",
+          "KP SEAY BARU ",
+          "GANTI ARESTER GD 138 BELERAKSOK DAN PANGKAS TEBANG",
+          "YANDAL PATROL",
+          "TUMBANG PANGKAS "
+        ],
+        "F. Saumanganya": [
+          "PATROL",
+          "KP.SIKAKAP",
+          "KP. SIKAKAP"
+        ],
+        "F Maileppet": [
+          "YANDAL PATROL"
+        ],
+        "F. Pokai": [
+          "SELESAI ",
+          "SIRILANGGAI-MONGANPOULA",
+          "PLTD - SIRILANGGAI "
+        ],
+        "F. Saibi": [
+          "LINE UTAMA SAIBI-UJUNG",
+          "PLTD SAIBI - UJUNG",
+          "PLTD SAIBI -UJUNG",
+          "7",
+          "PLTD SAIBI-UJUNG",
+          "PLTD SAIBI -UJUNG ",
+          "3"
+        ]
+      }
     }
   }
 }

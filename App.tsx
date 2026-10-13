@@ -372,6 +372,35 @@ const App: React.FC = () => {
             if (rawDelPeny) deletedPenyulangSet = new Set(JSON.parse(rawDelPeny));
           } catch(e) {}
 
+          // Helper functions to check if item was deleted by user
+          const isPetugasDeleted = (ulpKey: string, petName: string) => {
+            const normU = ulpKey.toLowerCase().replace(/^ulp\s*/, '').trim();
+            const normP = petName.toLowerCase().trim();
+            for (const del of deletedPetugasSet) {
+              const parts = del.split('::');
+              if (parts.length >= 2) {
+                const delU = parts[0].toLowerCase().replace(/^ulp\s*/, '').trim();
+                const delP = parts[1].toLowerCase().trim();
+                if ((delU === normU || !delU) && delP === normP) return true;
+              }
+            }
+            return false;
+          };
+
+          const isPenyulangDeleted = (ulpKey: string, penyName: string) => {
+            const normU = ulpKey.toLowerCase().replace(/^ulp\s*/, '').trim();
+            const normP = penyName.toLowerCase().trim();
+            for (const del of deletedPenyulangSet) {
+              const parts = del.split('::');
+              if (parts.length >= 2) {
+                const delU = parts[0].toLowerCase().replace(/^ulp\s*/, '').trim();
+                const delP = parts[1].toLowerCase().trim();
+                if ((delU === normU || !delU) && delP === normP) return true;
+              }
+            }
+            return false;
+          };
+
           setMasterData(prev => {
             // Selalu mulai dari INITIAL_DATA_ULP lengkap agar seluruh 10 ULP Padang selalu tersedia
             const merged: Record<string, ULPData> = { ...INITIAL_DATA_ULP, ...prev };
@@ -392,13 +421,13 @@ const App: React.FC = () => {
               const sPetugas = Array.isArray(sUlp.petugas) ? sUlp.petugas.map((p: string) => p?.trim()).filter(Boolean) : [];
               const pPetugas = Array.isArray(pUlp.petugas) ? pUlp.petugas.map((p: string) => p?.trim()).filter(Boolean) : [];
               const combinedPetugas = Array.from(new Set([...sPetugas, ...pPetugas]));
-              const mergedPetugas = combinedPetugas.filter(p => !deletedPetugasSet.has(`${k}::${p}`));
+              const mergedPetugas = combinedPetugas.filter(p => !isPetugasDeleted(k, p));
 
               // Merge and deduplicate penyulang (excluding items deleted locally)
               const sPenyulang = Array.isArray(sUlp.penyulang) ? sUlp.penyulang.map((p: string) => p?.trim()).filter(Boolean) : [];
               const pPenyulang = Array.isArray(pUlp.penyulang) ? pUlp.penyulang.map((p: string) => p?.trim()).filter(Boolean) : [];
               const combinedPenyulang = Array.from(new Set([...sPenyulang, ...pPenyulang]));
-              const mergedPenyulang = combinedPenyulang.filter(p => !deletedPenyulangSet.has(`${k}::${p}`));
+              const mergedPenyulang = combinedPenyulang.filter(p => !isPenyulangDeleted(k, p));
 
               // Merge keypoints per penyulang
               const mergedKeypoints: Record<string, string[]> = {};
@@ -418,6 +447,16 @@ const App: React.FC = () => {
                 penyulang: mergedPenyulang,
                 keypoints: mergedKeypoints
               };
+            });
+
+            // Juga bersihkan petugas / penyulang yang telah dihapus dari seluruh entri merged
+            Object.keys(merged).forEach(k => {
+              if (merged[k]?.petugas) {
+                merged[k].petugas = merged[k].petugas.filter((p: string) => !isPetugasDeleted(k, p));
+              }
+              if (merged[k]?.penyulang) {
+                merged[k].penyulang = merged[k].penyulang.filter((p: string) => !isPenyulangDeleted(k, p));
+              }
             });
 
             try {
@@ -1243,7 +1282,12 @@ const App: React.FC = () => {
                 const rawDel = localStorage.getItem('yandal_deleted_petugas');
                 if (rawDel) {
                   const set = new Set(JSON.parse(rawDel));
-                  names.forEach(n => set.delete(`${ulp}::${n}`));
+                  const normTarget = ulp.toLowerCase().replace(/^ulp\s*/, '').trim();
+                  names.forEach(n => {
+                    set.delete(`${ulp}::${n}`);
+                    set.delete(`${normTarget}::${n}`);
+                    set.delete(`ULP ${normTarget.toUpperCase()}::${n}`);
+                  });
                   localStorage.setItem('yandal_deleted_petugas', JSON.stringify(Array.from(set)));
                 }
               } catch(e){}
@@ -1253,19 +1297,29 @@ const App: React.FC = () => {
               return { success: true, message: 'Tersimpan di mode demo / offline.' };
             }}
             onDeletePetugas={async (ulp, n) => { 
-              const nd = {
-                ...masterData, 
-                [ulp]: {
-                  ...masterData[ulp], 
-                  petugas: (masterData[ulp]?.petugas || []).filter(p => p !== n)
+              const nd = { ...masterData };
+              const normTarget = ulp.toLowerCase().replace(/^ulp\s*/, '').trim();
+              const normName = n.trim().toLowerCase();
+
+              // Remove from all matching ULP keys in state
+              Object.keys(nd).forEach(k => {
+                const normKey = k.toLowerCase().replace(/^ulp\s*/, '').trim();
+                if (normKey === normTarget || k === ulp || nd[k]?.name === ulp) {
+                  nd[k] = {
+                    ...nd[k],
+                    petugas: (nd[k]?.petugas || []).filter((p: string) => p?.trim().toLowerCase() !== normName)
+                  };
                 }
-              }; 
+              });
+
               setMasterData(nd); 
               try { 
                 localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); 
                 const rawDel = localStorage.getItem('yandal_deleted_petugas');
                 const set = new Set(rawDel ? JSON.parse(rawDel) : []);
-                set.add(`${ulp}::${n}`);
+                set.add(`${ulp}::${n.trim()}`);
+                set.add(`${normTarget}::${n.trim()}`);
+                set.add(`ULP ${normTarget.toUpperCase()}::${n.trim()}`);
                 localStorage.setItem('yandal_deleted_petugas', JSON.stringify(Array.from(set)));
               } catch(e){}
               if (!isDemoMode) {
@@ -1288,7 +1342,12 @@ const App: React.FC = () => {
                 const rawDel = localStorage.getItem('yandal_deleted_penyulang');
                 if (rawDel) {
                   const set = new Set(JSON.parse(rawDel));
-                  names.forEach(n => set.delete(`${ulp}::${n}`));
+                  const normTarget = ulp.toLowerCase().replace(/^ulp\s*/, '').trim();
+                  names.forEach(n => {
+                    set.delete(`${ulp}::${n}`);
+                    set.delete(`${normTarget}::${n}`);
+                    set.delete(`ULP ${normTarget.toUpperCase()}::${n}`);
+                  });
                   localStorage.setItem('yandal_deleted_penyulang', JSON.stringify(Array.from(set)));
                 }
               } catch(e){}
@@ -1298,19 +1357,29 @@ const App: React.FC = () => {
               return { success: true, message: 'Tersimpan di mode demo / offline.' };
             }}
             onDeletePenyulang={async (ulp, n) => { 
-              const nd = {
-                ...masterData, 
-                [ulp]: {
-                  ...masterData[ulp], 
-                  penyulang: (masterData[ulp]?.penyulang || []).filter(p => p !== n)
+              const nd = { ...masterData };
+              const normTarget = ulp.toLowerCase().replace(/^ulp\s*/, '').trim();
+              const normName = n.trim().toLowerCase();
+
+              // Remove from all matching ULP keys in state
+              Object.keys(nd).forEach(k => {
+                const normKey = k.toLowerCase().replace(/^ulp\s*/, '').trim();
+                if (normKey === normTarget || k === ulp || nd[k]?.name === ulp) {
+                  nd[k] = {
+                    ...nd[k],
+                    penyulang: (nd[k]?.penyulang || []).filter((p: string) => p?.trim().toLowerCase() !== normName)
+                  };
                 }
-              }; 
+              });
+
               setMasterData(nd); 
               try { 
                 localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); 
                 const rawDel = localStorage.getItem('yandal_deleted_penyulang');
                 const set = new Set(rawDel ? JSON.parse(rawDel) : []);
-                set.add(`${ulp}::${n}`);
+                set.add(`${ulp}::${n.trim()}`);
+                set.add(`${normTarget}::${n.trim()}`);
+                set.add(`ULP ${normTarget.toUpperCase()}::${n.trim()}`);
                 localStorage.setItem('yandal_deleted_penyulang', JSON.stringify(Array.from(set)));
               } catch(e){}
               if (!isDemoMode) {
@@ -1338,9 +1407,24 @@ const App: React.FC = () => {
             }}
             onDeleteKeypoint={async (ulp, penyulang, kp) => {
               const nd = { ...masterData };
-              if (nd[ulp].keypoints?.[penyulang]) {
-                nd[ulp].keypoints[penyulang] = nd[ulp].keypoints[penyulang].filter(item => item !== kp);
-              }
+              const normTarget = ulp.toLowerCase().replace(/^ulp\s*/, '').trim();
+              const normKp = kp.trim().toLowerCase();
+
+              Object.keys(nd).forEach(k => {
+                const normKey = k.toLowerCase().replace(/^ulp\s*/, '').trim();
+                if (normKey === normTarget || k === ulp || nd[k]?.name === ulp) {
+                  if (nd[k]?.keypoints?.[penyulang]) {
+                    nd[k] = {
+                      ...nd[k],
+                      keypoints: {
+                        ...nd[k].keypoints,
+                        [penyulang]: nd[k].keypoints[penyulang].filter((item: string) => item?.trim().toLowerCase() !== normKp)
+                      }
+                    };
+                  }
+                }
+              });
+
               setMasterData(nd); 
               try { localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); } catch(e){}
               if (!isDemoMode) {
