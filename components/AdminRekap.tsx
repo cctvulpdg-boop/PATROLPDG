@@ -25,16 +25,17 @@ export const AdminRekap: React.FC<AdminRekapProps> = ({ reports, masterData }) =
     const rawResult: any[] = [];
 
     // 2. Iterasi melalui semua ULP di masterData
-    // Fixed: Explicitly typed ulpData as ULPData to fix 'unknown' type error
-    Object.values(masterData).forEach((ulpData: ULPData) => {
+    Object.entries(masterData).forEach(([key, ulpData]: [string, any]) => {
+      const uName = (ulpData && ulpData.name) ? ulpData.name : key;
       // Filter ULP jika ada input filter
-      if (filterUlp && ulpData.name !== filterUlp) return;
+      if (filterUlp && uName !== filterUlp) return;
 
       // 3. Iterasi setiap petugas di ULP tersebut
-      ulpData.petugas.forEach(namaPetugas => {
+      const petugasList = Array.isArray(ulpData?.petugas) ? ulpData.petugas : [];
+      petugasList.forEach((namaPetugas: string) => {
         // Hitung realisasi (berapa kali petugas ini muncul di laporan yang sudah difilter tanggal)
         const totalRealisasi = filteredReports.filter(r => 
-          r.ulp === ulpData.name && 
+          r.ulp === uName && 
           (r.petugas1 === namaPetugas || r.petugas2 === namaPetugas)
         ).length;
 

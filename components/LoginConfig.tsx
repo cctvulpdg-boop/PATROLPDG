@@ -59,9 +59,10 @@ export const LoginConfig: React.FC<LoginConfigProps> = ({ role, masterData, onCo
               {isGuest && (
                 <option value="UP3" className="font-black text-primary">UP3 (GABUNGAN SEMUA ULP)</option>
               )}
-              {Object.values(masterData).map((u: ULPData) => (
-                <option key={u.name} value={u.name}>{u.name}</option>
-              ))}
+              {Object.entries(masterData).map(([key, u]) => {
+                const uName = (u && typeof u === 'object' && (u as any).name) ? (u as any).name : key;
+                return <option key={uName} value={uName}>{uName}</option>;
+              })}
             </select>
           </div>
 

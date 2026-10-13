@@ -7,9 +7,13 @@ import react from '@vitejs/plugin-react';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec';
+const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ_F1mf8nXa15xz_OSY03govRm4iPP2l3JNLEAvyB_qDjJ2O7ic9xa0Lm2hf9QIv1I/exec';
 const LEGACY_SCRIPT_URLS = [
-  'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec'
+  'https://script.google.com/macros/s/AKfycbxZQCtJAN3giwCFPL3i_9SF2qPC_YHctU8JoFZuWazgijkYm1QqbFKPg4OBjeIZ9bUx/exec',
+  'https://script.google.com/macros/s/AKfycbxrPZXVy1sZVeKt_kHiFzH7qhK-N9-ukBRP7_aNARnFTRcgt8cMMapQKMx1mMzfTR2U/exec',
+  'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec',
+  'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec',
+  'https://script.google.com/macros/s/AKfycbyxQLvmw8ci2BIe4xzbL3dC3BldsC3AbWzhrVrolS-1d7LU-Edj5fmlFqyPJx68Yz95/exec'
 ];
 
 function gasProxyPlugin() {
@@ -62,7 +66,28 @@ function gasProxyPlugin() {
                     const parsed = JSON.parse(text);
                     if (parsed.reports && parsed.reports.length > 0) {
                       const seedPath = path.resolve(__dirname, 'data/seedData.json');
-                      fs.writeFileSync(seedPath, text, 'utf8');
+                      let existingMaster: Record<string, any> = {};
+                      if (fs.existsSync(seedPath)) {
+                        try {
+                          const existingSeed = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+                          if (existingSeed.masterData && typeof existingSeed.masterData === 'object') {
+                            existingMaster = existingSeed.masterData;
+                          }
+                        } catch (e) {}
+                      }
+                      
+                      let newMaster = { ...existingMaster };
+                      if (parsed.masterData && typeof parsed.masterData === 'object') {
+                        if (parsed.masterData.name && Array.isArray(parsed.masterData.petugas)) {
+                          newMaster[parsed.masterData.name] = parsed.masterData;
+                        } else {
+                          newMaster = { ...newMaster, ...parsed.masterData };
+                        }
+                      }
+                      parsed.masterData = newMaster;
+                      fs.writeFileSync(seedPath, JSON.stringify(parsed, null, 2), 'utf8');
+                      res.end(JSON.stringify(parsed));
+                      return;
                     }
                   } catch (e) {}
 
@@ -112,6 +137,19 @@ function gasProxyPlugin() {
 
                 res.setHeader('Content-Type', 'application/json');
                 if (gasRes.ok) {
+                  if (postAction === 'updateMaster') {
+                    try {
+                      const parsedBody = JSON.parse(body);
+                      if (parsedBody && parsedBody.data) {
+                        const seedPath = path.resolve(__dirname, 'data/seedData.json');
+                        if (fs.existsSync(seedPath)) {
+                          const currentSeed = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+                          currentSeed.masterData = parsedBody.data;
+                          fs.writeFileSync(seedPath, JSON.stringify(currentSeed, null, 2), 'utf8');
+                        }
+                      }
+                    } catch (err) {}
+                  }
                   res.end(responseText.trim().startsWith('{') ? responseText : JSON.stringify({ status: 'success', raw: responseText }));
                 } else {
                   res.statusCode = gasRes.status;

@@ -85,7 +85,36 @@ const App: React.FC = () => {
   const [isBackupLoading, setIsBackupLoading] = useState(false);
   const [backupError, setBackupError] = useState<string | null>(null);
   const [lastBackupFetch, setLastBackupFetch] = useState<number>(0);
-  const [masterData, setMasterData] = useState<Record<string, ULPData>>(INITIAL_DATA_ULP);
+  const [masterData, setMasterData] = useState<Record<string, ULPData>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('yandal_cached_master');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && typeof parsed === 'object') {
+            const keys = Object.keys(parsed);
+            const isCorrupt = keys.includes('name') || keys.includes('petugas');
+            const hasLegacyBukittinggi = keys.some(k => ['ULP Padang', 'ULP Padang Panjang', 'ULP Lubuk Sikaping', 'ULP Lubuk Basung', 'ULP Simpang Empat', 'ULP Baso', 'ULP Koto Tuo', 'BATUSANGKAR', 'PAYAKUMBUH'].includes(k));
+            const hasPadangUlp = keys.some(k => k === 'ULP BELANTI' || k === 'ULP TABING' || k === 'ULP SICINCIN' || k === 'ULP INDARUNG');
+            if (isCorrupt || hasLegacyBukittinggi || !hasPadangUlp) {
+              localStorage.removeItem('yandal_cached_master');
+            } else {
+              const clean: Record<string, ULPData> = { ...INITIAL_DATA_ULP };
+              keys.forEach(k => {
+                if (parsed[k] && parsed[k].petugas) {
+                  clean[k] = parsed[k];
+                }
+              });
+              return clean;
+            }
+          }
+        }
+      } catch (e) {
+        localStorage.removeItem('yandal_cached_master');
+      }
+    }
+    return INITIAL_DATA_ULP;
+  });
   const [editingReport, setEditingReport] = useState<ReportData | null>(null);
   const [updatingReport, setUpdatingReport] = useState<ReportData | null>(null);
 
@@ -299,44 +328,103 @@ const App: React.FC = () => {
           setReports([]);
         }
         
-        if (data.masterData) {
-          console.log("Master data ditemukan.");
-          const updatedMaster = { ...data.masterData };
-          Object.keys(updatedMaster).forEach(k => { 
-            if (!updatedMaster[k].keypoints) updatedMaster[k].keypoints = {}; 
-            
-            // Deduplicate petugas
-            if (Array.isArray(updatedMaster[k].petugas)) {
-              updatedMaster[k].petugas = Array.from(new Set(updatedMaster[k].petugas.map((p: string) => p?.trim()))).filter(Boolean);
-            } else {
-              updatedMaster[k].petugas = [];
-            }
+        if (data.masterData && typeof data.masterData === 'object' && Object.keys(data.masterData).length > 0) {
+          console.log("Master data ditemukan dari server.");
+          let serverMaster: Record<string, any> = {};
 
-            // Deduplicate penyulang
-            if (Array.isArray(updatedMaster[k].penyulang)) {
-              updatedMaster[k].penyulang = Array.from(new Set(updatedMaster[k].penyulang.map((p: string) => p?.trim()))).filter(Boolean);
-            } else {
-              updatedMaster[k].penyulang = [];
-            }
+          // Jika server mengembalikan single ULP object langsung { name: 'ULP BELANTI', petugas: [...] }
+          if ((data.masterData as any).name && Array.isArray((data.masterData as any).petugas)) {
+            const singleUlp = data.masterData as any;
+            serverMaster[singleUlp.name] = singleUlp;
+          } else {
+            // Server mengembalikan kamus multi-ULP
+            const rawKeys = Object.keys(data.masterData);
+            rawKeys.forEach(k => {
+              if (k !== 'name' && k !== 'petugas' && k !== 'penyulang' && k !== 'keypoints') {
+                serverMaster[k] = data.masterData[k];
+              }
+            });
+          }
 
-            // Deduplicate keypoints per penyulang
-            if (updatedMaster[k].keypoints) {
-              Object.keys(updatedMaster[k].keypoints).forEach(kpKey => {
-                if (Array.isArray(updatedMaster[k].keypoints[kpKey])) {
-                  updatedMaster[k].keypoints[kpKey] = Array.from(new Set(updatedMaster[k].keypoints[kpKey].map((p: string) => p?.trim()))).filter(Boolean);
-                } else {
-                  updatedMaster[k].keypoints[kpKey] = [];
+          // Otomatis sinkronkan ULP yang ada dari laporan riil
+          if (Array.isArray(data.reports)) {
+            data.reports.forEach((r: any) => {
+              if (r.ulp && typeof r.ulp === 'string' && r.ulp.trim().length > 0) {
+                const u = r.ulp.trim();
+                if (!serverMaster[u] && !INITIAL_DATA_ULP[u]) {
+                  serverMaster[u] = {
+                    name: u,
+                    petugas: [r.petugas1, r.petugas2].filter(Boolean),
+                    penyulang: [r.penyulang].filter(Boolean),
+                    keypoints: {}
+                  };
                 }
-              });
-            }
-
-            // Sanitize name to prevent key collisions if API data contains duplicate values
-            updatedMaster[k].name = k as any;
-          });
-          setMasterData(updatedMaster);
+              }
+            });
+          }
+          
+          let deletedPetugasSet = new Set<string>();
+          let deletedPenyulangSet = new Set<string>();
           try {
-            localStorage.setItem('yandal_cached_master', JSON.stringify(updatedMaster));
-          } catch (e) {}
+            const rawDelPet = localStorage.getItem('yandal_deleted_petugas');
+            if (rawDelPet) deletedPetugasSet = new Set(JSON.parse(rawDelPet));
+            const rawDelPeny = localStorage.getItem('yandal_deleted_penyulang');
+            if (rawDelPeny) deletedPenyulangSet = new Set(JSON.parse(rawDelPeny));
+          } catch(e) {}
+
+          setMasterData(prev => {
+            // Selalu mulai dari INITIAL_DATA_ULP lengkap agar seluruh 10 ULP Padang selalu tersedia
+            const merged: Record<string, ULPData> = { ...INITIAL_DATA_ULP, ...prev };
+            
+            // Hapus ULP legacy non-Padang jika tersisa dari cache lama
+            const legacyKeysToRemove = ['ULP Padang', 'ULP Padang Panjang', 'ULP Lubuk Sikaping', 'ULP Lubuk Basung', 'ULP Simpang Empat', 'ULP Baso', 'ULP Koto Tuo', 'BATUSANGKAR', 'PAYAKUMBUH', 'LIMA PULUH KOTA', 'LINTAU', 'name', 'petugas', 'penyulang', 'keypoints'];
+            legacyKeysToRemove.forEach(badKey => {
+              delete merged[badKey];
+            });
+
+            // Timpa dengan data dari server untuk masing-masing ULP
+            Object.keys(serverMaster).forEach(k => {
+              if (legacyKeysToRemove.includes(k)) return;
+              const sUlp = serverMaster[k] || {};
+              const pUlp = merged[k] || { name: k as ULPName, petugas: [], penyulang: [], keypoints: {} };
+
+              // Merge and deduplicate petugas (excluding items deleted locally)
+              const sPetugas = Array.isArray(sUlp.petugas) ? sUlp.petugas.map((p: string) => p?.trim()).filter(Boolean) : [];
+              const pPetugas = Array.isArray(pUlp.petugas) ? pUlp.petugas.map((p: string) => p?.trim()).filter(Boolean) : [];
+              const combinedPetugas = Array.from(new Set([...sPetugas, ...pPetugas]));
+              const mergedPetugas = combinedPetugas.filter(p => !deletedPetugasSet.has(`${k}::${p}`));
+
+              // Merge and deduplicate penyulang (excluding items deleted locally)
+              const sPenyulang = Array.isArray(sUlp.penyulang) ? sUlp.penyulang.map((p: string) => p?.trim()).filter(Boolean) : [];
+              const pPenyulang = Array.isArray(pUlp.penyulang) ? pUlp.penyulang.map((p: string) => p?.trim()).filter(Boolean) : [];
+              const combinedPenyulang = Array.from(new Set([...sPenyulang, ...pPenyulang]));
+              const mergedPenyulang = combinedPenyulang.filter(p => !deletedPenyulangSet.has(`${k}::${p}`));
+
+              // Merge keypoints per penyulang
+              const mergedKeypoints: Record<string, string[]> = {};
+              const sKeypoints = sUlp.keypoints || {};
+              const pKeypoints = pUlp.keypoints || {};
+              const allFeederKeys = Array.from(new Set([...Object.keys(sKeypoints), ...Object.keys(pKeypoints)]));
+              
+              allFeederKeys.forEach(fKey => {
+                const sKp = Array.isArray(sKeypoints[fKey]) ? sKeypoints[fKey].map((x: string) => x?.trim()).filter(Boolean) : [];
+                const pKp = Array.isArray(pKeypoints[fKey]) ? pKeypoints[fKey].map((x: string) => x?.trim()).filter(Boolean) : [];
+                mergedKeypoints[fKey] = Array.from(new Set([...sKp, ...pKp]));
+              });
+
+              merged[k] = {
+                name: k as ULPName,
+                petugas: mergedPetugas,
+                penyulang: mergedPenyulang,
+                keypoints: mergedKeypoints
+              };
+            });
+
+            try {
+              localStorage.setItem('yandal_cached_master', JSON.stringify(merged));
+            } catch (e) {}
+            return merged;
+          });
         }
       } else {
         throw new Error("Server tidak mengembalikan data.");
@@ -1140,21 +1228,125 @@ const App: React.FC = () => {
         {view === 'SETTINGS' && role === UserRole.ADMIN && (
           <AdminSettings 
             masterData={masterData}
-            onAddPetugas={(ulp, names) => { const nd = {...masterData, [ulp]: {...masterData[ulp], petugas: [...masterData[ulp].petugas, ...names]}}; setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd); }}
-            onDeletePetugas={(ulp, n) => { const nd = {...masterData, [ulp]: {...masterData[ulp], petugas: masterData[ulp].petugas.filter(p => p !== n)}}; setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd); }}
-            onAddPenyulang={(ulp, names) => { const nd = {...masterData, [ulp]: {...masterData[ulp], penyulang: [...masterData[ulp].penyulang, ...names]}}; setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd); }}
-            onDeletePenyulang={(ulp, n) => { const nd = {...masterData, [ulp]: {...masterData[ulp], penyulang: masterData[ulp].penyulang.filter(p => p !== n)}}; setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd); }}
-            onAddKeypoint={(ulp, penyulang, kps) => {
+            onAddPetugas={async (ulp, names) => { 
+              const currentList = masterData[ulp]?.petugas || [];
+              const nd = {
+                ...masterData, 
+                [ulp]: {
+                  ...masterData[ulp], 
+                  petugas: Array.from(new Set([...currentList, ...names]))
+                }
+              }; 
+              setMasterData(nd); 
+              try { 
+                localStorage.setItem('yandal_cached_master', JSON.stringify(nd));
+                const rawDel = localStorage.getItem('yandal_deleted_petugas');
+                if (rawDel) {
+                  const set = new Set(JSON.parse(rawDel));
+                  names.forEach(n => set.delete(`${ulp}::${n}`));
+                  localStorage.setItem('yandal_deleted_petugas', JSON.stringify(Array.from(set)));
+                }
+              } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
+            }}
+            onDeletePetugas={async (ulp, n) => { 
+              const nd = {
+                ...masterData, 
+                [ulp]: {
+                  ...masterData[ulp], 
+                  petugas: (masterData[ulp]?.petugas || []).filter(p => p !== n)
+                }
+              }; 
+              setMasterData(nd); 
+              try { 
+                localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); 
+                const rawDel = localStorage.getItem('yandal_deleted_petugas');
+                const set = new Set(rawDel ? JSON.parse(rawDel) : []);
+                set.add(`${ulp}::${n}`);
+                localStorage.setItem('yandal_deleted_petugas', JSON.stringify(Array.from(set)));
+              } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
+            }}
+            onAddPenyulang={async (ulp, names) => { 
+              const currentList = masterData[ulp]?.penyulang || [];
+              const nd = {
+                ...masterData, 
+                [ulp]: {
+                  ...masterData[ulp], 
+                  penyulang: Array.from(new Set([...currentList, ...names]))
+                }
+              }; 
+              setMasterData(nd); 
+              try { 
+                localStorage.setItem('yandal_cached_master', JSON.stringify(nd));
+                const rawDel = localStorage.getItem('yandal_deleted_penyulang');
+                if (rawDel) {
+                  const set = new Set(JSON.parse(rawDel));
+                  names.forEach(n => set.delete(`${ulp}::${n}`));
+                  localStorage.setItem('yandal_deleted_penyulang', JSON.stringify(Array.from(set)));
+                }
+              } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
+            }}
+            onDeletePenyulang={async (ulp, n) => { 
+              const nd = {
+                ...masterData, 
+                [ulp]: {
+                  ...masterData[ulp], 
+                  penyulang: (masterData[ulp]?.penyulang || []).filter(p => p !== n)
+                }
+              }; 
+              setMasterData(nd); 
+              try { 
+                localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); 
+                const rawDel = localStorage.getItem('yandal_deleted_penyulang');
+                const set = new Set(rawDel ? JSON.parse(rawDel) : []);
+                set.add(`${ulp}::${n}`);
+                localStorage.setItem('yandal_deleted_penyulang', JSON.stringify(Array.from(set)));
+              } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
+            }}
+            onSyncMaster={async () => {
+              try {
+                localStorage.setItem('yandal_cached_master', JSON.stringify(masterData));
+              } catch(e){}
+              return await api.updateMasterData(masterData);
+            }}
+            onAddKeypoint={async (ulp, penyulang, kps) => {
               const nd = { ...masterData };
               if (!nd[ulp].keypoints) nd[ulp].keypoints = {};
               if (!nd[ulp].keypoints[penyulang]) nd[ulp].keypoints[penyulang] = [];
-              nd[ulp].keypoints[penyulang] = [...new Set([...nd[ulp].keypoints[penyulang], ...kps])];
-              setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd);
+              nd[ulp].keypoints[penyulang] = Array.from(new Set([...nd[ulp].keypoints[penyulang], ...kps]));
+              setMasterData(nd); 
+              try { localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
             }}
-            onDeleteKeypoint={(ulp, penyulang, kp) => {
+            onDeleteKeypoint={async (ulp, penyulang, kp) => {
               const nd = { ...masterData };
-              if (nd[ulp].keypoints?.[penyulang]) nd[ulp].keypoints[penyulang] = nd[ulp].keypoints[penyulang].filter(item => item !== kp);
-              setMasterData(nd); if(!isDemoMode) api.updateMasterData(nd);
+              if (nd[ulp].keypoints?.[penyulang]) {
+                nd[ulp].keypoints[penyulang] = nd[ulp].keypoints[penyulang].filter(item => item !== kp);
+              }
+              setMasterData(nd); 
+              try { localStorage.setItem('yandal_cached_master', JSON.stringify(nd)); } catch(e){}
+              if (!isDemoMode) {
+                return await api.updateMasterData(nd);
+              }
+              return { success: true, message: 'Tersimpan di mode demo / offline.' };
             }}
           />
         )}
@@ -1236,8 +1428,8 @@ const App: React.FC = () => {
                     </div>
                   </section>
                   <div className="pt-10 border-t border-slate-100 flex flex-col items-center gap-2">
-                    <p className="text-base font-black text-slate-800 uppercase">PLN Electricity Services Padang</p>
-                    <p className="text-[11px] text-slate-400 font-bold uppercase">© DD-2025 • IT Unit Layanan Bukittinggi</p>
+                    <p className="text-base font-black text-slate-800 uppercase">PLN Electricity Services UP3 Padang</p>
+                    <p className="text-[11px] text-slate-400 font-bold uppercase">© 2025 • UP3 Padang</p>
                   </div>
                </div>
             </div>

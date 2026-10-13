@@ -5,9 +5,13 @@ import seedData from '../data/seedData.json';
 /**
  * URL Google Apps Script Default & Dynamic Configuration
  */
-const DEFAULT_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec'; 
+const DEFAULT_SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbxQ_F1mf8nXa15xz_OSY03govRm4iPP2l3JNLEAvyB_qDjJ2O7ic9xa0Lm2hf9QIv1I/exec'; 
 const LEGACY_SCRIPT_URLS = [
-  'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec'
+  'https://script.google.com/macros/s/AKfycbxZQCtJAN3giwCFPL3i_9SF2qPC_YHctU8JoFZuWazgijkYm1QqbFKPg4OBjeIZ9bUx/exec',
+  'https://script.google.com/macros/s/AKfycbxrPZXVy1sZVeKt_kHiFzH7qhK-N9-ukBRP7_aNARnFTRcgt8cMMapQKMx1mMzfTR2U/exec',
+  'https://script.google.com/macros/s/AKfycbwX0ayOTnDMZQi8r10jkz13vfi2531_N687C1xRQd767IIwlHWK2WOd1mzX9Z4taC30/exec',
+  'https://script.google.com/macros/s/AKfycbwL_M9hjTO5OVupCnVGA-kQh9luXayLeVZfgKZNDn96YHXp9pryhgbqGQPXuwIbCKUj/exec',
+  'https://script.google.com/macros/s/AKfycbyxQLvmw8ci2BIe4xzbL3dC3BldsC3AbWzhrVrolS-1d7LU-Edj5fmlFqyPJx68Yz95/exec'
 ];
 
 export const getScriptUrl = (): string => {
@@ -237,6 +241,12 @@ export const api = {
         const text = await res.text();
         if (text && !text.trim().startsWith('<') && (text.trim().startsWith('{') || text.trim().startsWith('['))) {
           const parsed = JSON.parse(text);
+          if (parsed.message === 'GAS is running' && !parsed.reports) {
+            return {
+              success: false,
+              message: 'URL Google Apps Script aktif, namun kode di Spreadsheet belum memiliki fungsi baca/tulis data. Buka panduan kode di bawah untuk menyalin Code.gs lengkap.'
+            };
+          }
           const count = Array.isArray(parsed.reports) ? parsed.reports.length : 0;
           return {
             success: true,
@@ -256,8 +266,8 @@ export const api = {
     }
   },
 
-  updateMasterData: async (masterData: Record<string, ULPData>) => {
-    // 1. Persist locally
+  updateMasterData: async (masterData: Record<string, ULPData>): Promise<{ success: boolean; message: string }> => {
+    // 1. Persist locally to localStorage immediately so data is never lost on refresh
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('yandal_cached_master', JSON.stringify(masterData));
@@ -266,32 +276,62 @@ export const api = {
       }
     }
 
-    // 2. Send to server
+    // 2. Send to server proxy and Google Apps Script
     const baseUrl = getScriptUrl();
     const payload = JSON.stringify({ action: 'updateMaster', data: masterData });
 
+    // Try Vite proxy first
     try {
-      await fetch(`/api/gas?scriptUrl=${encodeURIComponent(baseUrl)}`, {
+      const res = await fetch(`/api/gas?action=updateMaster&scriptUrl=${encodeURIComponent(baseUrl)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: payload
       });
-      return true;
+      if (res.ok) {
+        const text = await res.text();
+        try {
+          const json = JSON.parse(text);
+          if (json.status === 'success' || json.status === 'ok' || json.success === true) {
+            return { success: true, message: 'Data master berhasil disimpan ke Spreadsheet.' };
+          }
+          if (json.status === 'error') {
+            return { success: false, message: json.message || 'Server mengembalikan error saat menyimpan master.' };
+          }
+        } catch (e) {
+          if (text.includes('success')) {
+            return { success: true, message: 'Data master tersimpan.' };
+          }
+        }
+      }
     } catch (e) {
-      // Fallback
+      console.warn("Proxy updateMaster failed, trying direct fetch to GAS:", e);
     }
 
+    // Fallback: Direct fetch to Google Apps Script
     try {
-      await fetch(`${baseUrl}?action=updateMaster`, {
+      const directUrl = `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}action=updateMaster`;
+      const directRes = await fetch(directUrl, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: payload
       });
-      return true;
-    } catch (error) {
+      const text = await directRes.text();
+      try {
+        const json = JSON.parse(text);
+        if (json.status === 'success' || json.status === 'ok' || json.success === true) {
+          return { success: true, message: 'Data master berhasil disimpan ke Spreadsheet.' };
+        }
+        if (json.status === 'error') {
+          return { success: false, message: json.message };
+        }
+      } catch (err) {}
+      return { success: true, message: 'Data master dikirim ke Google Apps Script.' };
+    } catch (error: any) {
       console.warn("Direct update master data failed, saved locally:", error);
-      return true;
+      return { 
+        success: false, 
+        message: 'Koneksi ke Google Apps Script bermasalah, namun data tetap tersimpan di penyimpanan lokal perangkat ini.' 
+      };
     }
   }
 };

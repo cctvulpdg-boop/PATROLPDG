@@ -6,24 +6,16 @@ export enum UserRole {
 }
 
 export enum ULPName {
-  BELANTI = 'ULP BELANTI',
-  LUBUK_ALUNG = 'ULP LUBUK ALUNG',
-  PARIAMAN = 'ULP PARIAMAN',
-  TABING = 'ULP TABING',
-  INDARUNG = 'ULP INDARUNG',
-  SICINCIN = 'ULP SICINCIN',
   BALAI_SELASA = 'ULP BALAI SELASA',
-  PAINAN = 'ULP PAINAN',
+  BELANTI = 'ULP BELANTI',
+  INDARUNG = 'ULP INDARUNG',
   KURANJI = 'ULP KURANJI',
+  LUBUK_ALUNG = 'ULP LUBUK ALUNG',
   MENTAWAI = 'ULP MENTAWAI',
-  // Legacy Bukittinggi values for backwards compatibility
-  PADANG = 'ULP Padang',
-  PADANG_PANJANG = 'ULP Padang Panjang',
-  LUBUK_SIKAPING = 'ULP Lubuk Sikaping',
-  LUBUK_BASUNG = 'ULP Lubuk Basung',
-  SIMPANG_EMPAT = 'ULP Simpang Empat',
-  BASO = 'ULP Baso',
-  KOTO_TUO = 'ULP Koto Tuo'
+  PAINAN = 'ULP PAINAN',
+  PARIAMAN = 'ULP PARIAMAN',
+  SICINCIN = 'ULP SICINCIN',
+  TABING = 'ULP TABING'
 }
 
 export interface ReportData {
